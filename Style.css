@@ -10,7 +10,7 @@
 .question {
     background-color: white; /* Or any color you want */
     width: 80%; /* Or the width you prefer */
-    margin: 10px auto; /* Centers the box */
+    margin: 20px auto; /* Centers the box */
     padding: 20px; /* Spacing inside the box */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow around the box */
     border-radius: 8px; /* Rounded corners */
@@ -29,3 +29,7 @@
     text-align: center; 
 }
 
+span {
+    font-size: 20px;
+    font-weight: bold;
+}
