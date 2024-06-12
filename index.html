@@ -9,46 +9,45 @@
 </head>
 
 <body>
-    <h1>Questionnaire</h1>
-
-    <form>
-        <div class="question" id = "Q76513-1">
-            <span>How hard is it for you to pay for the very basics like food, housing, medical care, and
-                heating?</span>
-
-            <!-- <select name="1" id="1">
-                <option value="vh">Very hard</option>
-                <option value="h">Hard</option>
-                <option value="sh">Somewhat hard</option>
-                <option value="nvh">Not very hard</option>
-            </select> -->
-
-            <br>
-            <input type="radio" id="html" name="fav_language" value="HTML">
-            <label for="html">HTML</label><br>
-            <input type="radio" id="css" name="fav_language" value="CSS">
-            <label for="css">CSS</label><br>
-            <input type="radio" id="javascript" name="fav_language" value="JavaScript">
-            <label for="javascript">JavaScript</label> <br>
-        </div>
-
-        <div class="question" id = "Q96780-2">
-        
+    <div class="header">
+        <h1>SMART On FHIR Questionnaire</h1>
+    </div>
 
 
-            <br>
-            <input type="radio" id="1" value="1">
-            <label for="yfw">Yes, help finding work</label><br>
+    <div class="pageBox">
+        <form>
+            <div class="question" id="Q76513-1">
+                <span>How hard is it for you to pay for the very basics like food, housing, medical care, and
+                    heating?</span>
 
-            <input type="radio" id="2" value="2">
-            <label for="yfw">Yes, help finding work</label><br>
-        </div>
+                <br>
+                <input type="radio" id="vh" name="fav_language" value="vh">
+                <label for="vh">Very Hard</label><br>
+                <input type="radio" id="h" name="fav_language" value="h">
+                <label for="h">Hard</label><br>
+                <input type="radio" id="sh" name="fav_language" value="sh">
+                <label for="sh">Somewhat Hard</label> <br>
+                <input type="radio" id="nvh" name="fav_language" value="nvh">
+                <label for="nvh">Not Very Hard</label> <br>
+            </div>
 
+            <div class="question" id="Q96780-2">
 
+                <span>
+                    Do you want help finding or keeping work or a job?
+                </span>
 
-        <input type="submit" value="Submit Form">
+                <br>
+                <input type="radio" name="1">Yes, help finding work<br> 
+                <input type="radio" name="2">Yes, help keeping work<br>
+                <input type="radio" name="3">I do not need or want help<br>
+            </div>
 
-    </form>
+            <input type="submit" value="Submit Form">
+
+        </form>
+    </div>
+
 
 
 </body>
