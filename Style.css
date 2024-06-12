@@ -4,7 +4,7 @@
     color: rgb(140, 75, 75);
     font-family: "Monaco", Monospace;
     padding: 14px 16px;
-    background: grey;
+    background: linear-gradient(grey, rgba(0, 0, 0, 0) 50%, grey);
 }
 
 .pageBox {
