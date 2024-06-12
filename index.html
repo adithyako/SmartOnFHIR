@@ -9,29 +9,35 @@
 </head>
 
 <body>
-    <h1>Questionnaire</h1>
+    <div class="header">
+        <h1>SMART On FHIR Questionnaire</h1>
+    </div>
+    
 
-    <form>
-        <span id="Q76513-1"></span>
+    <div class="pageBox">
+        <form>
+            <span id="Q76513-1"></span>
+    
+            <select name="1" id="1">
+                <option value="vh">Very hard</option>
+                <option value="h">Hard</option>
+                <option value="sh">Somewhat hard</option>
+                <option value="nvh">Not very hard</option>
+            </select>
+    
+            <br>
+            <input type="radio" id="html" name="fav_language" value="HTML">
+            <label for="html">HTML</label><br>
+            <input type="radio" id="css" name="fav_language" value="CSS">
+            <label for="css">CSS</label><br>
+            <input type="radio" id="javascript" name="fav_language" value="JavaScript">
+            <label for="javascript">JavaScript</label> <br>
+    
+            <input type = "submit" value = "Submit Form">
+    
+        </form>
+    </div>
 
-        <select name="1" id="1">
-            <option value="vh">Very hard</option>
-            <option value="h">Hard</option>
-            <option value="sh">Somewhat hard</option>
-            <option value="nvh">Not very hard</option>
-        </select>
-
-        <br>
-        <input type="radio" id="html" name="fav_language" value="HTML">
-        <label for="html">HTML</label><br>
-        <input type="radio" id="css" name="fav_language" value="CSS">
-        <label for="css">CSS</label><br>
-        <input type="radio" id="javascript" name="fav_language" value="JavaScript">
-        <label for="javascript">JavaScript</label> <br>
-
-        <input type = "submit" value = "Submit Form">
-
-    </form>
 
 
 </body>
