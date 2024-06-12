@@ -1,10 +1,14 @@
 .header {
-    border-radius: 15px;
+    font-family: cursive;
+    font-size: 30px;
     text-align: center;
-    color: rgb(140, 75, 75);
-    font-family: "Monaco", Monospace;
-    padding: 14px 16px;
-    background: linear-gradient(grey, rgba(0, 0, 0, 0) 50%, grey);
+    background-color: white; /* Or any color you want */
+    width: 50%; /* Or the width you prefer */
+    margin: 10px auto; /* Centers the box */
+    padding: 5px; /* Spacing inside the box */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow around the box */
+    border-radius: 20px; /* Rounded corners */
+    background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));
 }
 
 .question {
