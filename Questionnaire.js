@@ -62,16 +62,12 @@ items.forEach(curr => {
         ret += `<label><select name = "A${curr2.code}">`; // open answer dropdown menu
 
         curr.answerOption.forEach(curr3 => {
-
-            // console.log(curr3.valueCoding.display);
-
             /* adds the answer to the dropdown menu for each answer */
             ret += `<option value="${curr3.valueCoding.display}">${curr3.valueCoding.display}</option>`;
         })
 
-        ret += `</select></label></div>`
+        ret += `</select></label></div>` // close tags
     });
-    // console.log(curr)
 
     app.get("/", (req, res) => {
         const variables = {title: arrList.title, questions: ret}
