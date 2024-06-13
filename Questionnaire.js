@@ -28,7 +28,7 @@ if (process.argv.length != 3) {
 
 const listName = process.argv[2];
 
-const prompt = "Type formTemplate or stop to shutdown the server: ";
+const prompt = "Type stop to shutdown the server: ";
 
 const jsonList = fs.readFileSync(listName, "utf-8");
 const arrList = JSON.parse(jsonList);
@@ -38,9 +38,7 @@ process.stdin.on("readable", function () {
     const dataInput = process.stdin.read();
     if (dataInput !== null) {
         const command = dataInput.trim();
-        if (command === "itemsList") {
-            console.log(realItemList);
-        } else if (command === "stop") {
+        if (command === "stop") {
             process.stdout.write("Shutting down the server\n");
             process.exit(0);
         } else {
@@ -51,14 +49,34 @@ process.stdin.on("readable", function () {
     }
 });
 
-app.get("/", (req, res) => {
-    const variables = {title: arrList.title}
-    res.render("index", variables);
+const items = arrList.item;
+
+let ret = "";
+items.forEach(curr => {
+
+    curr.code.forEach(curr2 => {
+
+        ret += `<div class="question" id="Q${curr2.code}">` // open div
+        ret += `<span>` + curr2.display + `</span><hr><br>`; // display question
+        
+        ret += `<label><select name = "A${curr2.code}">`; // open answer dropdown menu
+
+        curr.answerOption.forEach(curr3 => {
+
+            // console.log(curr3.valueCoding.display);
+
+            /* adds the answer to the dropdown menu for each answer */
+            ret += `<option value="${curr3.valueCoding.display}">${curr3.valueCoding.display}</option>`;
+        })
+
+        ret += `</select></label></div>`
+    });
+    // console.log(curr)
+
+    app.get("/", (req, res) => {
+        const variables = {title: arrList.title, questions: ret}
+        res.render("index", variables);
+    });
+
 });
-
-// const items = arrList.item;
-
-// items.forEach(curr => {
-//     console.log(curr)
-// });
 
