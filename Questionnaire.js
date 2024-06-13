@@ -60,6 +60,8 @@ items.forEach(curr => {
         ret += `<span>` + curr2.display + `</span><hr><br>`; // display question
         
         ret += `<label><select name = "A${curr2.code}">`; // open answer dropdown menu
+        ret += `<option value="" disabled selected>Please select</option>`; // please select option 
+
 
         curr.answerOption.forEach(curr3 => {
 
