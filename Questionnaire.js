@@ -68,11 +68,11 @@ items.forEach(curr => {
 
         ret += `</select></label></div>` // close tags
     });
-
-    app.get("/", (req, res) => {
-        const variables = {title: arrList.title, questions: ret}
-        res.render("index", variables);
-    });
-
 });
+
+app.get("/", (req, res) => {
+    const variables = {title: arrList.title, questions: ret}
+    res.render("index", variables);
+});
+
 
