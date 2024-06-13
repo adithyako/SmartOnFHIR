@@ -8,7 +8,7 @@
     padding: 5px; /* Spacing inside the box */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow around the box */
     border-radius: 20px; /* Rounded corners */
-    background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));
+    background-image: linear-gradient(to top, rgba(255, 255, 255), rgba(255,0,0,1));
 }
 
 .question {
@@ -27,7 +27,7 @@
     padding: 10px; /* Spacing inside the box */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow around the box */
     border-radius: 8px; /* Rounded corners */
-    background-image: linear-gradient(to bottom right, rgb(255, 255, 255), rgb(255, 3, 3));
+    background-image: linear-gradient(to bottom, rgb(255, 255, 255), rgb(255, 3, 3));
 }
 
 .submitButton{ 
