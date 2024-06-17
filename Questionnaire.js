@@ -4,6 +4,25 @@ const bodyParser = require("body-parser"); /* To handle post parameters */
 const portNumber = 3000;
 const path = require("path");
 
+const smart   = require("fhirclient");
+const session = require("express-session");
+
+// The SMART state is stored in a session. If you want to clear your session
+// and start over, you will have to delete your "connect.sid" cookie!
+app.use(session({
+    secret: "my secret",
+    resave: false,
+    saveUninitialized: false
+}));
+
+// The settings that we use to connect to our SMART on FHIR server
+const smartSettings = {
+    clientId: "eec22f7e-5014-4b7c-98a1-178c505da56c",
+    redirectUri: "/app",
+    scope: "launch openid fhirUser patient/*.read Questionnaire.Read Questionnaire.Search QuestionnaireResponse.Read QuestionnaireResponse.Search",
+    iss: "https://launch.smarthealthit.org/v/r2/sim/eyJrIjoiMSIsImIiOiJzbWFydC03Nzc3NzA1In0/fhir"
+};
+
 /* Module for file reading */
 const fs = require("fs");
 
@@ -76,8 +95,10 @@ items.forEach(curr => {
     // console.log(curr)
 });
 
-app.get('/launch', function (req, res) {
-    res.render('launch');
+
+
+app.get('/launch', function (req, res, next) {
+    smart(req, res).authorize(smartSettings).catch(next);
 });
 
 app.get('/index', function (req, res) {
@@ -85,6 +106,7 @@ app.get('/index', function (req, res) {
 });
 
 app.get("/app", (req, res) => {
+    smart(req, res).ready().then(client => handler(client, res));
     const variables = { title: arrList.title, questions: ret }
     res.render("app", variables);
 });
