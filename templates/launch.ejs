@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8" />
     <title>Launch My App</title>
     <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
 </head>
+
 <body>
     <script>
         FHIR.oauth2.authorize({
             // Your client ID obtained after registering the app
             clientId: "eec22f7e-5014-4b7c-98a1-178c505da56c",
             // Scopes requested from the EHR
-            scope: "launch openid fhirUser patient/*.read",
+            scope: "launch openid fhirUser patient/*.read Questionnaire.Read Questionnaire.Search QuestionnaireResponse.Read QuestionnaireResponse.Search",
             // Redirect URI (where the EHR will redirect after authorization)
-            redirectUri: "/"
+            redirectUri: "https://smartonfhir.onrender.com/index"
         });
     </script>
 </body>
+
 </html>

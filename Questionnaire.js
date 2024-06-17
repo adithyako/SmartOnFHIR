@@ -17,7 +17,7 @@ app.use('/public', express.static('public'));
 app.listen(portNumber);
 
 
-console.log(`Web server started and running at http://localhost:${portNumber}`);
+console.log(`Web server started and running at http://localhost:${portNumber}/launch`);
 
 process.stdin.setEncoding("utf8");
 
@@ -80,7 +80,7 @@ app.get('/launch', function (req, res) {
     res.render('launch');
 });
 
-app.get("/", (req, res) => {
+app.get("/index", (req, res) => {
     const variables = { title: arrList.title, questions: ret }
     res.render("index", variables);
 });
