@@ -64,17 +64,21 @@ items.forEach(curr => {
 
 
         curr.answerOption.forEach(curr3 => {
+
+            // console.log(curr3.valueCoding.display);
+
             /* adds the answer to the dropdown menu for each answer */
             ret += `<option value="${curr3.valueCoding.display}">${curr3.valueCoding.display}</option>`;
         })
 
-        ret += `</select></label></div>` // close tags
+        ret += `</select></label></div>`
     });
-});
+    // console.log(curr)
 
-app.get("/", (req, res) => {
-    const variables = {title: arrList.title, questions: ret}
-    res.render("index", variables);
-});
+    app.get("/", (req, res) => {
+        const variables = {title: arrList.title, questions: ret}
+        res.render("index", variables);
+    });
 
+});
 
