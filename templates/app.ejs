@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title> <%- title %> </title>
+    <link rel="stylesheet" type="text/css" href="/public/css/styles.css">
+    <script src="Questionnaire.js"></script>
+</head>
+
+<body>
+    <div class="header">
+        <h1> <%- title %> </h1>
+    </div>
+
+
+    <div class="question-container">
+        <form>
+            
+            <%- questions %>
+
+            <div class="submitButton">
+                <input type="submit" value="Submit Form">
+            </div>
+
+
+        </form>
+    </div>
+
+
+</body>
+
+</html>
