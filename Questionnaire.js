@@ -58,7 +58,7 @@ items.forEach(curr => {
 
         ret += `<div class="question" id="Q${curr2.code}">` // open div
         ret += `<span>` + curr2.display + `</span><hr><br>`; // display question
-        
+
         ret += `<label><select name = "A${curr2.code}">`; // open answer dropdown menu
         ret += `<option value="" disabled selected>Please select</option>`; // please select option 
 
@@ -74,11 +74,16 @@ items.forEach(curr => {
         ret += `</select></label></div>`
     });
     // console.log(curr)
-
-    app.get("/", (req, res) => {
-        const variables = {title: arrList.title, questions: ret}
-        res.render("index", variables);
-    });
-
 });
+
+app.get('/launch', function (req, res) {
+    res.render('launch');
+});
+
+app.get("/", (req, res) => {
+    const variables = { title: arrList.title, questions: ret }
+    res.render("index", variables);
+});
+
+
 
