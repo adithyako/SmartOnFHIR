@@ -113,15 +113,8 @@ app.get('/index', function (req, res) {
 // });
 
 app.get("/app", (req, res) => {
-    LForms.Util.addFormToPage(jsonList, 'formContainer');
-
-    // Define the function for showing the QuestionnaireResponse
-    function showQR() {
-        let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
-        window.alert(JSON.stringify(qr, null, 2));
-    }
-
-    const variables = { show: showQR}
+    smart(req, res).ready().then(client => handler(client, res));
+    const variables = { formToAdd: jsonList };
     res.render("form", variables);
 });
 
