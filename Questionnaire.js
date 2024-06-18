@@ -114,6 +114,6 @@ app.get("/app", (req, res) => {
 
 app.get('/tos', function (req, res) {
     res.render('tos');
-});t 
+}); 
 
 
