@@ -4,7 +4,7 @@ const bodyParser = require("body-parser"); /* To handle post parameters */
 const portNumber = 3000;
 const path = require("path");
 
-const smart   = require("fhirclient");
+const smart = require("fhirclient");
 const session = require("express-session");
 
 // The SMART state is stored in a session. If you want to clear your session
@@ -106,10 +106,23 @@ app.get('/index', function (req, res) {
     res.render('index');
 });
 
+// app.get("/app", (req, res) => {
+//     smart(req, res).ready().then(client => handler(client, res));
+//     const variables = { title: arrList.title, questions: ret }
+//     res.render("app", variables);
+// });
+
 app.get("/app", (req, res) => {
-    smart(req, res).ready().then(client => handler(client, res));
-    const variables = { title: arrList.title, questions: ret }
-    res.render("app", variables);
+    LForms.Util.addFormToPage(jsonList, 'formContainer');
+
+    // Define the function for showing the QuestionnaireResponse
+    function showQR() {
+        let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+        window.alert(JSON.stringify(qr, null, 2));
+    }
+
+    const variables = { show: showQR}
+    res.render("form", variables);
 });
 
 app.get('/tos', function (req, res) {
