@@ -33,6 +33,7 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/public', express.static('public'));
 
+
 app.listen(portNumber);
 
 
@@ -113,6 +114,6 @@ app.get("/app", (req, res) => {
 
 app.get('/tos', function (req, res) {
     res.render('tos');
-});
+});t 
 
 
