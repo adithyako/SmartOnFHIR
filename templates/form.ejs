@@ -19,6 +19,7 @@
 
 
     <script>
+        
         LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
     
         function showQR() {
@@ -52,13 +53,13 @@
 
 <!--
     <script>
-        LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
+        LForms.Util.addFormToPage(, 'formContainer');
 
         // Define the function for showing the QuestionnaireResponse
         function showQR() {
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
 
-            let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(<%- formToAdd %>, 'R4');
+            let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(, 'R4');
             let formWithUserData = LForms.Util.mergeFHIRDataIntoLForms("QuestionnaireResponse", qr, lformsQ, "R4");
             
             LForms.Util.addFormToPage(formWithUserData, 'formContainer');
