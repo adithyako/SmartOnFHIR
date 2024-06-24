@@ -118,7 +118,6 @@ app.get("/app", (req, res) => {
 });
 
 app.get("/questionnaire", (req, res) => {
-    smart(req, res).ready().then(client => handler(client, res));
     const variables = { formToAdd: jsonList };
     res.render("form", variables);
 });
