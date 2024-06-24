@@ -81,11 +81,9 @@ app.get('/index', (req, res) => {
 });
 
 app.get("/app", (req, res) => {
-    smart(req, res).ready().then(client => {
-        req.session.smartToken = client.state.tokenResponse;
-        const variables = { formToAdd: jsonList };
-        res.render("form", variables);
-    });
+    smart(req, res).ready().then(client => handler(client, res));
+    const variables = { formToAdd: jsonList };
+    res.render("form", variables);
 });
 
 app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
