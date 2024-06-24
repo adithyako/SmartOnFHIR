@@ -15,13 +15,9 @@
 
     "fhir": "^4.12.0",
     "express-session": "^1.18.0",
-<<<<<<< HEAD
 
-    "fhirclient": "^2.5.3"
-=======
     "fhirclient": "^2.5.3",
     "lforms": "^36.1.3"
->>>>>>> 243a9532f18c1f31622b3b9c3968375d865e7378
   },
   "keywords": []
 }
