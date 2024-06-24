@@ -3,7 +3,6 @@ const app = express(); /* app is a request handler function */
 const bodyParser = require("body-parser"); /* To handle post parameters */
 const portNumber = 3000;
 const path = require("path");
-
 const smart = require("fhirclient");
 const session = require("express-session");
 
