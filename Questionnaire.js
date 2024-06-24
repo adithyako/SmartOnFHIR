@@ -85,15 +85,7 @@ app.get("/app", (req, res) => {
     res.render("form", variables);
 });
 
-<<<<<<< HEAD
-app.get('/tos', function (req, res) {
-    res.render('tos');
-}); 
-
-app.post("/submit-questionnaire", (req, res) => {
-=======
 app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
->>>>>>> b627aa5e63742d14d48e74898b9528ed9dd5ddc3
     const questionnaireResponse = req.body;
     req.session.lastQuestionnaireResponse = questionnaireResponse;
     res.json({ message: "QuestionnaireResponse received successfully" });
