@@ -114,8 +114,13 @@ app.get('/index', function (req, res) {
 
 app.get("/app", (req, res) => {
     smart(req, res).ready().then(client => handler(client, res));
-    const variables = { formToAdd: jsonList };
     res.render("home", variables);
+});
+
+app.get("/questionnaire", (req, res) => {
+    smart(req, res).ready().then(client => handler(client, res));
+    const variables = { formToAdd: jsonList };
+    res.render("form", variables);
 });
 
 app.get('/tos', function (req, res) {
