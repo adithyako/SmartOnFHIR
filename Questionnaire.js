@@ -84,12 +84,20 @@ app.get("/app", (req, res) => {
     const variables = { formToAdd: jsonList };
     res.render("form", variables);
 });
-
+/*
 app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
     const questionnaireResponse = req.body;
     req.session.lastQuestionnaireResponse = questionnaireResponse;
     res.json({ message: "QuestionnaireResponse received successfully" });
 });
+*/
+
+app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
+    const questionnaireResponse = req.body; // Make sure this data structure matches what you send
+    req.session.lastQuestionnaireResponse = questionnaireResponse;
+    res.json({ message: "QuestionnaireResponse received successfully" });
+});
+
 
 app.get('/view-response', ensureAuthenticated, (req, res) => {
     const lastQuestionnaireResponse = req.session.lastQuestionnaireResponse || {};

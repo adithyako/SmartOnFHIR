@@ -16,6 +16,41 @@
     <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
     <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
 
+
+
+    <script>
+        LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
+    
+        function showQR() {
+            let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+    
+            // Convert and merge data here if needed
+            let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(<%- formToAdd %>, 'R4');
+            let formWithUserData = LForms.Util.mergeFHIRDataIntoLForms("QuestionnaireResponse", qr, lformsQ, "R4");
+            
+            LForms.Util.addFormToPage(formWithUserData, 'formContainer');
+    
+            // Submitting the data to the server
+            fetch('/submit-questionnaire', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'  // Changed to application/json
+                },
+                body: JSON.stringify(qr)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+    
+
+
+<!--
     <script>
         LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
 
@@ -45,7 +80,7 @@
             
         }
     </script>
-
+-->
 </body>
 
 </html>
