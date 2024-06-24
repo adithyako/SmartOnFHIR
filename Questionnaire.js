@@ -122,4 +122,10 @@ app.get('/tos', function (req, res) {
     res.render('tos');
 });
 
+app.post("/submit-questionnaire", (req, res) => {
+    const questionnaireResponse = req.body;
+    console.log("Received QuestionnaireResponse:", questionnaireResponse);
+    // You can add logic here to process and store the QuestionnaireResponse
+    res.json({ message: "QuestionnaireResponse received successfully" });
+});
 
