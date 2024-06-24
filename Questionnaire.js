@@ -31,12 +31,10 @@ app.set("view engine", "ejs");
 
 /* Initializes request.body with post information */
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use('/public', express.static('public'));
 
-
 app.listen(portNumber);
-
-
 console.log(`Web server started and running at http://localhost:${portNumber}/index`);
 
 process.stdin.setEncoding("utf8");
@@ -47,11 +45,9 @@ if (process.argv.length != 3) {
 }
 
 const listName = process.argv[2];
-
 const prompt = "Type stop to shutdown the server: ";
 
 const jsonList = fs.readFileSync(listName, "utf-8");
-const arrList = JSON.parse(jsonList);
 
 process.stdout.write(prompt);
 process.stdin.on("readable", function () {
@@ -69,67 +65,36 @@ process.stdin.on("readable", function () {
     }
 });
 
-const items = arrList.item;
+function ensureAuthenticated(req, res, next) {
+    if (req.session.smartToken) {
+        return next();
+    }
+    res.redirect('/launch');
+}
 
-let ret = "";
-items.forEach(curr => {
-
-    curr.code.forEach(curr2 => {
-
-        ret += `<div class="question" id="Q${curr2.code}">` // open div
-        ret += `<span>` + curr2.display + `</span><hr><br>`; // display question
-
-        ret += `<label><select name = "A${curr2.code}">`; // open answer dropdown menu
-        ret += `<option value="" disabled selected>Please select</option>`; // please select option 
-
-
-        curr.answerOption.forEach(curr3 => {
-
-            // console.log(curr3.valueCoding.display);
-
-            /* adds the answer to the dropdown menu for each answer */
-            ret += `<option value="${curr3.valueCoding.display}">${curr3.valueCoding.display}</option>`;
-        })
-
-        ret += `</select></label></div>`
-    });
-    // console.log(curr)
+app.get('/launch', (req, res) => {
+    res.render('launch');
 });
 
-
-
-app.get('/launch', function (req, res, next) {
-    smart(req, res).authorize(smartSettings).catch(next);
-});
-
-app.get('/index', function (req, res) {
+app.get('/index', (req, res) => {
     res.render('index');
 });
 
-// app.get("/app", (req, res) => {
-//     smart(req, res).ready().then(client => handler(client, res));
-//     const variables = { title: arrList.title, questions: ret }
-//     res.render("app", variables);
-// });
-
 app.get("/app", (req, res) => {
-    smart(req, res).ready().then(client => handler(client, res));
-    res.render("home", variables);
+    smart(req, res).ready().then(client => {
+        req.session.smartToken = client.state.tokenResponse;
+        const variables = { formToAdd: jsonList };
+        res.render("form", variables);
+    });
 });
 
-app.get("/questionnaire", (req, res) => {
-    const variables = { formToAdd: jsonList };
-    res.render("form", variables);
-});
-
-app.get('/tos', function (req, res) {
-    res.render('tos');
-});
-
-app.post("/submit-questionnaire", (req, res) => {
+app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
     const questionnaireResponse = req.body;
-    console.log("Received QuestionnaireResponse:", questionnaireResponse);
-    // You can add logic here to process and store the QuestionnaireResponse
+    req.session.lastQuestionnaireResponse = questionnaireResponse;
     res.json({ message: "QuestionnaireResponse received successfully" });
 });
 
+app.get('/view-response', ensureAuthenticated, (req, res) => {
+    const lastQuestionnaireResponse = req.session.lastQuestionnaireResponse || {};
+    res.render('view-response', { lastQuestionnaireResponse });
+});
