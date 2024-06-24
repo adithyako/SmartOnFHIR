@@ -112,6 +112,10 @@ app.get('/index', function (req, res) {
 //     res.render("app", variables);
 // });
 
+app.get('/home', function (req, res) {
+    res.render('home');
+});
+
 app.get("/app", (req, res) => {
     smart(req, res).ready().then(client => handler(client, res));
     const variables = { formToAdd: jsonList };
