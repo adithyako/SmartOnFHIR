@@ -30,8 +30,30 @@
     background-image: linear-gradient(to bottom, rgb(255, 255, 255), rgb(255, 3, 3));
 }
 
-.submitButton{ 
-    text-align: center; 
+/* Global body styles, assuming you want the entire page to be flex-contained */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure it fills at least the whole height of the viewport */
+    margin: 0; /* Remove default margin */
+}
+
+.submitButton {
+    margin-top: auto; /* Pushes the button to the bottom */
+    width: 100%; /* Full width button */
+    text-align: center;
+    padding: 10px 0; /* Adds some vertical padding */
+    background-color: #f00; /* Red background for visibility, change as needed */
+    color: white; /* Text color for visibility, change as needed */
+    border: none; /* Removes border */
+    cursor: pointer; /* Hand cursor on hover */
+}
+
+/* Ensure content does not overflow the page height */
+#formContainer {
+    overflow-y: auto; /* Allows scrolling within the form container */
+    padding: 20px; /* Adds padding inside the container */
+    flex: 1; /* Allows the container to grow and fill available space */
 }
 
 span {
