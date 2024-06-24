@@ -114,6 +114,11 @@ app.get('/index', function (req, res) {
 
 app.get("/app", (req, res) => {
     smart(req, res).ready().then(client => handler(client, res));
+    res.render("home", variables);
+});
+
+app.get("/questionnaire", (req, res) => {
+    smart(req, res).ready().then(client => handler(client, res));
     const variables = { formToAdd: jsonList };
     res.render("form", variables);
 });
@@ -122,4 +127,10 @@ app.get('/tos', function (req, res) {
     res.render('tos');
 }); 
 
+app.post("/submit-questionnaire", (req, res) => {
+    const questionnaireResponse = req.body;
+    console.log("Received QuestionnaireResponse:", questionnaireResponse);
+    // You can add logic here to process and store the QuestionnaireResponse
+    res.json({ message: "QuestionnaireResponse received successfully" });
+});
 
