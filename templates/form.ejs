@@ -13,11 +13,40 @@
     <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
     <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
     <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
-    <button onclick="showQR()">
-        Show FHIR QuestionnaireResponse
-    </button>
+    <button onclick="showQR()">Show FHIR QuestionnaireResponse</button>
 
 
+    <script>
+        LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
+        
+        function showQR() {
+            let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+            let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(<%- formToAdd %>, 'R4');
+            let formWithUserData = LForms.Util.mergeFHIRDataIntoLForms("QuestionnaireResponse", qr, lformsQ, "R4");
+            
+            LForms.Util.addFormToPage(formWithUserData, 'formContainer');
+
+            // Submitting the data to the server
+            fetch('/submit-questionnaire', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(qr)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.href = '/index'; // Redirects to the index page after successful submission
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+
+
+<!--
     <script>
         
         LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
@@ -48,8 +77,10 @@
             });
         }
     </script>
-    
 
+
+
+-->
 
 <!--
     <script>
