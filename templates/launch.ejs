@@ -10,7 +10,12 @@
 <body>
     <script>
         FHIR.oauth2.authorize({
-            <%- settings %>
+            // Your client ID obtained after registering the app
+            clientId: "eec22f7e-5014-4b7c-98a1-178c505da56c",
+            // Scopes requested from the EHR
+            scope: "launch/patient openid fhirUser patient/*.read Questionnaire.Read Questionnaire.Search QuestionnaireResponse.Read QuestionnaireResponse.Search Patient.Read Patient.Search",
+            // Redirect URI (where the EHR will redirect after authorization)
+            redirectUri: "https://smartonfhir.onrender.com/app"
         });
     </script>
 </body>
