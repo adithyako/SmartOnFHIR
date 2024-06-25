@@ -8,7 +8,11 @@
 </head>
 
 <body>
-    <%- settings %>
+    <script>
+        FHIR.oauth2.authorize({
+            <%- settings %>
+        });
+    </script>
 </body>
 
 </html>

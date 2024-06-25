@@ -20,7 +20,7 @@ const smartSettings = {
     clientId: "eec22f7e-5014-4b7c-98a1-178c505da56c",
     redirectUri: "https://smartonfhir.onrender.com/app",
     scope: "launch/patient openid fhirUser patient/*.read Questionnaire.Read Questionnaire.Search QuestionnaireResponse.Read QuestionnaireResponse.Search Patient.Read Patient.Search",
-    iss: "https://launch.smarthealthit.org/v/r2/sim/eyJrIjoiMSIsImIiOiJzbWFydC03Nzc3NzA1In0/fhir"
+    // iss: "https://launch.smarthealthit.org/v/r2/sim/eyJrIjoiMSIsImIiOiJzbWFydC03Nzc3NzA1In0/fhir"
 };
 
 /* Module for file reading */
@@ -73,9 +73,7 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.get('/launch', (req, res) => {
-
-    let str = `<script>FHIR.oauth2.authorize({${smartSettings}});</script>`;
-    const variables = {settings: str}
+    const variables = {settings: smartSettings}
     res.render('launch', variables);
 });
 
