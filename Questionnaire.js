@@ -19,7 +19,7 @@ app.use(session({
 const smartSettings = {
     clientId: "eec22f7e-5014-4b7c-98a1-178c505da56c",
     redirectUri: "/app",
-    scope: "launch openid fhirUser patient/*.read Questionnaire.Read Questionnaire.Search QuestionnaireResponse.Read QuestionnaireResponse.Search",
+    scope: "launch openid fhirUser patient/*.read Questionnaire.Read Questionnaire.Search QuestionnaireResponse.Read QuestionnaireResponse.Search Patient.Read Patient.Search",
     iss: "https://launch.smarthealthit.org/v/r2/sim/eyJrIjoiMSIsImIiOiJzbWFydC03Nzc3NzA1In0/fhir"
 };
 
