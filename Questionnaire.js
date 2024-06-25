@@ -93,11 +93,35 @@ app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
     res.json({ message: "QuestionnaireResponse received successfully" });
 });
 */
-
+/*
 app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
     const questionnaireResponse = req.body; // Make sure this data structure matches what you send
     req.session.lastQuestionnaireResponse = questionnaireResponse;
     res.json({ message: "QuestionnaireResponse received successfully" });
+});
+*/
+
+app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
+    const questionnaireResponse = req.body; // Make sure this data structure matches what you send
+    req.session.lastQuestionnaireResponse = questionnaireResponse;
+
+    // Adding your provided code to post the QuestionnaireResponse to a FHIR server
+    fetch('https://your-fhir-server.com/QuestionnaireResponse', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/fhir+json' // Make sure to match this with the required content type
+        },
+        body: JSON.stringify(questionnaireResponse)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Successfully saved questionnaire response:', data);
+        res.json({ message: "QuestionnaireResponse received and sent successfully" });
+    })
+    .catch(error => {
+        console.error('Error saving questionnaire response:', error);
+        res.status(500).json({ message: "Error in saving QuestionnaireResponse" });
+    });
 });
 
 
