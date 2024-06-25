@@ -102,27 +102,29 @@ app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
 */
 
 app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
-    const questionnaireResponse = req.body; // Make sure this data structure matches what you send
+    const questionnaireResponse = req.body;
     req.session.lastQuestionnaireResponse = questionnaireResponse;
 
-    // Adding your provided code to post the QuestionnaireResponse to a FHIR server
+    // Post the QuestionnaireResponse to a FHIR server
     fetch('https://your-fhir-server.com/QuestionnaireResponse', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/fhir+json' // Make sure to match this with the required content type
+            'Content-Type': 'application/fhir+json'
         },
         body: JSON.stringify(questionnaireResponse)
     })
     .then(response => response.json())
     .then(data => {
         console.log('Successfully saved questionnaire response:', data);
-        res.json({ message: "QuestionnaireResponse received and sent successfully" });
+        // Redirect to the patient selection page after successful submission
+        res.redirect('/index'); // Adjust the redirect URL as necessary
     })
     .catch(error => {
         console.error('Error saving questionnaire response:', error);
         res.status(500).json({ message: "Error in saving QuestionnaireResponse" });
     });
 });
+
 
 
 app.get('/view-response', ensureAuthenticated, (req, res) => {
