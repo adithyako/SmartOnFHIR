@@ -73,9 +73,9 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.get('/launch', (req, res) => {
-    let str = `<script>FHIR.oauth2.authorize({${smartSettings}});</script>`;
-    const variables = {settings: str}
-    res.render('launch', variables);
+    // let str = `<script>FHIR.oauth2.authorize({${smartSettings}});</script>`;
+    // const variables = {settings: str}
+    res.render('launch');
 });
 
 app.get('/index', (req, res) => {
