@@ -8,15 +8,32 @@
 </head>
 
 <body>
+    <iframe id="myAppIframe" style="width: 100%; height: 100vh; border: none;"></iframe>
+
     <script>
-        FHIR.oauth2.authorize({
-            // Your client ID obtained after registering the app
-            clientId: "eec22f7e-5014-4b7c-98a1-178c505da56c",
-            // Scopes requested from the EHR
-            scope: "launch/patient openid fhirUser patient/*.read Questionnaire.Read Questionnaire.Search QuestionnaireResponse.Read QuestionnaireResponse.Search Patient.Read Patient.Search Questionnaire.Create",
-            // Redirect URI (where the EHR will redirect after authorization)
-            redirectUri: "https://smartonfhir.onrender.com/app"
-        });
+        const iframeDocument = document.getElementById('myAppIframe').contentDocument;
+        const iframeContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8" />
+            <title>Launch My App</title>
+            <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
+        </head>
+        <body>
+            <script>
+                FHIR.oauth2.authorize({
+                    clientId: "eec22f7e-5014-4b7c-98a1-178c505da56c",
+                    scope: "launch/patient openid fhirUser patient/*.read Questionnaire.Read Questionnaire.Search QuestionnaireResponse.Read QuestionnaireResponse.Search Patient.Read Patient.Search Questionnaire.Create",
+                    redirectUri: "https://smartonfhir.onrender.com/app"
+                });
+            <\/script>
+        </body>
+        </html>`;
+
+        iframeDocument.open();
+        iframeDocument.write(iframeContent);
+        iframeDocument.close();
     </script>
 </body>
 
