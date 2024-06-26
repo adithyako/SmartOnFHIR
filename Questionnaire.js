@@ -3,7 +3,6 @@ const app = express(); /* app is a request handler function */
 const bodyParser = require("body-parser"); /* To handle post parameters */
 const portNumber = 3000;
 const path = require("path");
-
 const smart = require("fhirclient");
 const session = require("express-session");
 
@@ -87,10 +86,53 @@ app.get("/app", (req, res) => {
     const variables = { formToAdd: jsonList };
     res.render("form", variables);
 });
+<<<<<<< HEAD
+/*
+app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
+    const questionnaireResponse = req.body;
+    req.session.lastQuestionnaireResponse = questionnaireResponse;
+    res.json({ message: "QuestionnaireResponse received successfully" });
+});
+*/
+/*
+app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
+    const questionnaireResponse = req.body; // Make sure this data structure matches what you send
+    req.session.lastQuestionnaireResponse = questionnaireResponse;
+    res.json({ message: "QuestionnaireResponse received successfully" });
+});
+*/
+
+app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
+    const questionnaireResponse = req.body;
+    req.session.lastQuestionnaireResponse = questionnaireResponse;
+
+    // Post the QuestionnaireResponse to a FHIR server
+    fetch('https://your-fhir-server.com/QuestionnaireResponse', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/fhir+json'
+        },
+        body: JSON.stringify(questionnaireResponse)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Successfully saved questionnaire response:', data);
+        // Redirect to the patient selection page after successful submission
+        res.redirect('/index'); // Adjust the redirect URL as necessary
+    })
+    .catch(error => {
+        console.error('Error saving questionnaire response:', error);
+        res.status(500).json({ message: "Error in saving QuestionnaireResponse" });
+    });
+});
+
+
+=======
 
 app.get('/tos', function (req, res) {
     res.render('tos');
 }); 
+>>>>>>> 749ef3e95b391967a7cfa8cdfdd2a8fe90a15ebc
 
 app.get('/questionnaire',(req, res) => {
     res.render("questionnairepage");
