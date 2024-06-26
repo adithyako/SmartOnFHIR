@@ -46,11 +46,11 @@
 
 <!--
     <script>
-        LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
+        LForms.Util.addFormToPage( 'formContainer');
         
         function showQR() {
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
-            let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(<%- formToAdd %>, 'R4');
+            let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(, 'R4');
             let formWithUserData = LForms.Util.mergeFHIRDataIntoLForms("QuestionnaireResponse", qr, lformsQ, "R4");
             
             LForms.Util.addFormToPage(formWithUserData, 'formContainer');
@@ -78,13 +78,13 @@
 <!--
     <script>
         
-        LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
+        LForms.Util.addFormToPage( 'formContainer');
     
         function showQR() {
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
     
             // Convert and merge data here if needed
-            let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(<%- formToAdd %>, 'R4');
+            let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms( 'R4');
             let formWithUserData = LForms.Util.mergeFHIRDataIntoLForms("QuestionnaireResponse", qr, lformsQ, "R4");
             
             LForms.Util.addFormToPage(formWithUserData, 'formContainer');
