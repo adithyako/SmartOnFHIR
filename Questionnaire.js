@@ -86,7 +86,6 @@ app.get("/app", (req, res) => {
     const variables = { formToAdd: jsonList };
     res.render("form", variables);
 });
-<<<<<<< HEAD
 /*
 app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
     const questionnaireResponse = req.body;
@@ -127,14 +126,8 @@ app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
 });
 
 
-=======
 
-app.get('/tos', function (req, res) {
-    res.render('tos');
-}); 
->>>>>>> 749ef3e95b391967a7cfa8cdfdd2a8fe90a15ebc
-
-app.get('/questionnaire',(req, res) => {
-    res.render("questionnairepage");
+app.get('/formselector',(req, res) => {
+    res.render("formselection");
 });
 
