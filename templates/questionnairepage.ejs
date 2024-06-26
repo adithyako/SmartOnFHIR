@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang= "en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,31 +11,32 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fhirclient/2.4.0/fhir-client.min.js"></script>
     <script>
-       // Initialize the SMART on FHIR client
-    FHIR.oauth2.ready().then(function(client) {
-        // Fetch the questionnaire resources
-        client.request("Questionnaire").then(function(data) {
-            // Get the questionnaire list element
-            const questionnaireList = document.getElementById('questionnaire-list');
-            
-            // Iterate through the questionnaires and create links
-            data.entry.forEach(function(entry) {
-                const questionnaire = entry.resource;
-                const listItem = document.createElement('li');
-                const link = document.createElement('a');
+        // Initialize the SMART on FHIR client
+        FHIR.oauth2.ready().then(function(client) {
+            // Fetch the questionnaire resources using the authenticated client
+            client.request("Questionnaire").then(function(data) {
+                // Get the questionnaire list element
+                const questionnaireList = document.getElementById('questionnaire-list');
                 
-                link.href = "link-to-your-questionnaire-page?questionnaireId=" + questionnaire.id;
-                link.textContent = questionnaire.title || "Unnamed Questionnaire";
-                
-                listItem.appendChild(link);
-                questionnaireList.appendChild(listItem);
+                // Iterate through the questionnaires and create links
+                data.entry.forEach(function(entry) {
+                    const questionnaire = entry.resource;
+                    const listItem = document.createElement('li');
+                    const link = document.createElement('a');
+                    
+                    // Link to the form page with the questionnaire ID
+                    link.href = "/form?questionnaireId=" + questionnaire.id; // Adjust this URL as needed to point to your form handling route
+                    link.textContent = questionnaire.title || "Unnamed Questionnaire";
+                    
+                    listItem.appendChild(link);
+                    questionnaireList.appendChild(listItem);
+                });
+            }).catch(function(error) {
+                console.error("Error fetching questionnaires:", error);
             });
         }).catch(function(error) {
-            console.error("Error fetching questionnaires:", error);
+            console.error("Error initializing SMART on FHIR client:", error);
         });
-    }).catch(function(error) {
-        console.error("Error initializing SMART on FHIR client:", error);
-    });
     </script>
 </body>
 </html>
