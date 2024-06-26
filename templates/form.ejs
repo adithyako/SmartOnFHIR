@@ -6,15 +6,49 @@
 </head>
 
 <body>
-    <button onclick="<%- show %>">
+    <button onclick="showQR()">
         Show FHIR QuestionnaireResponse
     </button>
+
     <div id=formContainer></div>
 
     <script
         src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
     <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
     <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
+
+    <script>
+
+        LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
+
+        // Define the function for showing the QuestionnaireResponse
+        function showQR() {
+            let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+
+            let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(<%- formToAdd %>, 'R4');
+            let formWithUserData = LForms.Util.mergeFHIRDataIntoLForms("QuestionnaireResponse", qr, lformsQ, "R4");
+            
+            LForms.Util.addFormToPage(formWithUserData, 'formContainer');
+            
+            // fetch('/submit-questionnaire', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/fhir+json'
+            //     },
+            //     body: JSON.stringify(qr)
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     console.log('Success:', data);
+            // })
+            // .catch((error) => {
+            //     console.error('Error:', error);
+            //     // Handle the error appropriately
+            // });
+            
+        }
+    </script>
+
 </body>
 
 </html>
