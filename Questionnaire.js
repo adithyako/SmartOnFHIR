@@ -18,9 +18,9 @@ app.use(session({
 // The settings that we use to connect to our SMART on FHIR server
 const smartSettings = {
     clientId: "eec22f7e-5014-4b7c-98a1-178c505da56c",
-    redirectUri: "/app",
-    scope: "launch openid fhirUser patient/*.read Questionnaire.Read Questionnaire.Search QuestionnaireResponse.Read QuestionnaireResponse.Search Patient.Read Patient.Search",
-    iss: "https://launch.smarthealthit.org/v/r2/sim/eyJrIjoiMSIsImIiOiJzbWFydC03Nzc3NzA1In0/fhir"
+    redirectUri: "https://smartonfhir.onrender.com/app",
+    scope: "launch/patient openid fhirUser patient/*.read Questionnaire.Read Questionnaire.Search QuestionnaireResponse.Read QuestionnaireResponse.Search Patient.Read Patient.Search",
+    // iss: "https://launch.smarthealthit.org/v/r2/sim/eyJrIjoiMSIsImIiOiJzbWFydC03Nzc3NzA1In0/fhir"
 };
 
 /* Module for file reading */
@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 app.use('/public', express.static('public'));
 
 app.listen(portNumber);
-console.log(`Web server started and running at http://localhost:${portNumber}/index`);
+console.log(`Web server started and running at https://smartonfhir.onrender.com/index`);
 
 process.stdin.setEncoding("utf8");
 
@@ -73,6 +73,8 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.get('/launch', (req, res) => {
+    // let str = `<script>FHIR.oauth2.authorize({${smartSettings}});</script>`;
+    // const variables = {settings: str}
     res.render('launch');
 });
 
