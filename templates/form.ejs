@@ -21,6 +21,35 @@
         
         function showQR() {
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+            
+            // Submitting the data to the server
+            fetch('/submit-questionnaire', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(qr)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Redirect to responsedata.ejs with the server response
+                window.location.href = '/response-data?' + new URLSearchParams({result: JSON.stringify(data)});
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+    
+
+
+<!--
+    <script>
+        LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
+        
+        function showQR() {
+            let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
             let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(<%- formToAdd %>, 'R4');
             let formWithUserData = LForms.Util.mergeFHIRDataIntoLForms("QuestionnaireResponse", qr, lformsQ, "R4");
             
@@ -44,7 +73,7 @@
             });
         }
     </script>
-
+-->
 
 <!--
     <script>
@@ -80,9 +109,7 @@
 
 
 
--->
 
-<!--
     <script>
         LForms.Util.addFormToPage(, 'formContainer');
 

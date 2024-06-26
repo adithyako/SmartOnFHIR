@@ -103,7 +103,6 @@ app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
 
 app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
     const questionnaireResponse = req.body;
-    req.session.lastQuestionnaireResponse = questionnaireResponse;
 
     // Post the QuestionnaireResponse to a FHIR server
     fetch('https://your-fhir-server.com/QuestionnaireResponse', {
@@ -116,8 +115,8 @@ app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
     .then(response => response.json())
     .then(data => {
         console.log('Successfully saved questionnaire response:', data);
-        // Redirect to the patient selection page after successful submission
-        res.redirect('/index'); // Adjust the redirect URL as necessary
+        // Send back the data received from the FHIR server to the client
+        res.json(data);
     })
     .catch(error => {
         console.error('Error saving questionnaire response:', error);
@@ -127,6 +126,12 @@ app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
 
 
 
+
 app.get('/formselector',(req, res) => {
     res.render("formselection");
+});
+
+
+app.get('/response-data', (req, res) => {
+    res.render('responsedata');
 });
