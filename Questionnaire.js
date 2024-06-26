@@ -92,7 +92,7 @@ app.get('/tos', function (req, res) {
     res.render('tos');
 }); 
 
-app.get('/view-response', ensureAuthenticated, (req, res) => {
-    const lastQuestionnaireResponse = req.session.lastQuestionnaireResponse || {};
-    res.render('view-response', { lastQuestionnaireResponse });
+app.get('/questionnaire',(req, res) => {
+    res.render("questionnairepage");
 });
+
