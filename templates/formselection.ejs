@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMART on FHIR Questionnaire Links</title>
+</head>
+<body>
+    <h1>Questionnaire Links</h1>
+    <ul id="questionnaire-list"></ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fhirclient/2.4.0/fhir-client.min.js"></script>
+    <script>
+        FHIR.oauth2.ready().then(function(client) {
+            client.request("Questionnaire").then(function(data) {
+                const questionnaireList = document.getElementById('questionnaire-list');
+                data.entry.forEach(function(entry) {
+                    const questionnaire = entry.resource;
+                    const listItem = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.href = "form.html?questionnaireId=" + questionnaire.id;
+                    link.textContent = questionnaire.title || "AHC FORM";
+                    listItem.appendChild(link);
+                    questionnaireList.appendChild(listItem);
+                });
+            }).catch(function(error) {
+                console.error("Error fetching questionnaires:", error);
+            });
+        }).catch(function(error) {
+            console.error("Error initializing SMART on FHIR client:", error);
+        });
+    </script>
+</body>
+</html>
