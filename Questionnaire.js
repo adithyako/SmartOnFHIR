@@ -7,6 +7,10 @@ const path = require("path");
 const smart = require("fhirclient");
 const session = require("express-session");
 
+//module for file reading 
+
+const fs = require("fs");
+
 // The SMART state is stored in a session. If you want to clear your session
 // and start over, you will have to delete your "connect.sid" cookie!
 app.use(session({
@@ -23,8 +27,6 @@ const smartSettings = {
     // iss: "https://launch.smarthealthit.org/v/r2/sim/eyJrIjoiMSIsImIiOiJzbWFydC03Nzc3NzA1In0/fhir"
 };
 
-/* Module for file reading */
-const fs = require("fs");
 
 app.set("views", path.resolve(__dirname, "templates"));
 app.set("view engine", "ejs");
@@ -45,9 +47,10 @@ if (process.argv.length != 3) {
 }
 
 const listName = process.argv[2];
+const jsonList = fs.readFileSync(listName, "utf-8");
 const prompt = "Type stop to shutdown the server: ";
 
-const jsonList = fs.readFileSync(listName, "utf-8");
+
 
 process.stdout.write(prompt);
 process.stdin.on("readable", function () {
@@ -87,6 +90,10 @@ app.get('/launch', (req, res) => {
     // let str = `<script>FHIR.oauth2.authorize({${smartSettings}});</script>`;
     // const variables = {settings: str}
     res.render('launch');
+});
+
+app.get('/home', (req, res) => {
+    res.render('home'); 
 });
 
 app.get('/index', (req, res) => {
