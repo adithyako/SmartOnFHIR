@@ -11,28 +11,21 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fhirclient/2.4.0/fhir-client.min.js"></script>
     <script>
-        // Initialize the SMART on FHIR client
         FHIR.oauth2.ready().then(function(client) {
-            // Fetch the questionnaire resources using the authenticated client
             client.request("Questionnaire").then(function(data) {
-                // Get the questionnaire list element
                 const questionnaireList = document.getElementById('questionnaire-list');
-                
-                // Iterate through the questionnaires and create links
                 data.entry.forEach(function(entry) {
                     const questionnaire = entry.resource;
                     const listItem = document.createElement('li');
                     const link = document.createElement('a');
-                    
-                    // Link to the form page with the questionnaire ID
-                    link.href = "/form?questionnaireId=" + questionnaire.id; // Adjust this URL as needed to point to your form handling route
+                    link.href = "/load-form?formId=" + questionnaire.id; // This ensures the ID is passed correctly
                     link.textContent = questionnaire.title || "Unnamed Questionnaire";
-                    
                     listItem.appendChild(link);
                     questionnaireList.appendChild(listItem);
                 });
             }).catch(function(error) {
                 console.error("Error fetching questionnaires:", error);
+                questionnaireList.innerHTML = '<li>Error loading questionnaires.</li>'; // User feedback
             });
         }).catch(function(error) {
             console.error("Error initializing SMART on FHIR client:", error);

@@ -151,17 +151,18 @@ app.post("/token", (req, res) => {
 app.get('/load-form', ensureAuthenticated, (req, res) => {
     const fhirClient = new FHIR.client({
         serverUrl: process.env.FHIR_SERVER_URL,
-        token: req.cookies['accessToken']
+        token: req.cookies['accessToken'] // Ensure you're using secure cookies
     });
 
-    fhirClient.request(`/Questionnaire/${req.query.formId}`).then(questionnaire => {
+    fhirClient.request(`/Questionnaire/${req.query.formId}`)
+    .then(questionnaire => {
         res.render('form', { formToAdd: JSON.stringify(questionnaire) });
-    }).catch(err => {
+    })
+    .catch(err => {
         console.error('Failed to fetch questionnaire:', err);
         res.status(500).send('Failed to load form');
     });
 });
-
 
 
 app.get('/formselector',(req, res) => {
