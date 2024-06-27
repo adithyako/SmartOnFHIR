@@ -25,7 +25,10 @@
 <body>
     <div id="formContainer"></div>
 
+    <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
     <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
+    <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
+    <button onclick="showQR()">Show FHIR QuestionnaireResponse</button>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var formToAdd = <%- formToAdd %>;
