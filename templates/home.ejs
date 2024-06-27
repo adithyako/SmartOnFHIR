@@ -1,18 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
 </head>
-
 <body>
     <h1>Welcome to the Health App</h1>
+    
+    <p>Click on the "Choose File" button to upload a file:</p>
+    <form action="/action_page.php" method="post" enctype="multipart/form-data" onsubmit="return includeToken()">
+        <input type="file" id="myFile" name="filename">
+        <input type="submit">
+    </form>
+    
     <p>Please select an option:</p>
     <ul>
         <li><a href="https://smartonfhir.onrender.com/questionnaire">Fill out Questionnaire</a></li>
     </ul>
+    
+    <script>
+        // Extract the authorization code from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const authCode = urlParams.get('code');
+        
+        if (authCode) {
+            // Exchange the authorization code for an access token
+            fetch('https://oauthprovider.com/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    client_id: 'YOUR_CLIENT_ID',
+                    client_secret: 'YOUR_CLIENT_SECRET',
+                    code: authCode,
+                    redirect_uri: 'YOUR_REDIRECT_URI',
+                    grant_type: 'authorization_code'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Store the access token securely
+                localStorage.setItem('accessToken', data.access_token);
+                // Remove the authorization code from the URL
+                window.history.replaceState({}, document.title, "/");
+            });
+        }
+        
+        // Function to get the token from Local Storage
+        function getAccessToken() {
+            return localStorage.getItem('accessToken');
+        }
+        
+        // Include the token in form submissions
+        function includeToken() {
+            const token = getAccessToken();
+            if (token) {
+                const form = document.querySelector('form');
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'access_token';
+                input.value = token;
+                form.appendChild(input);
+            }
+            return true;
+        }
+        
+        // Example API Request with Token
+        function makeApiRequest() {
+            const token = getAccessToken();
+            fetch('https://yourapi.com/endpoint', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (response.status === 401) {
+                    // Token is invalid or expired, redirect to login
+                    window.location.href = '/login';
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                console.log(data);
+            });
+        }
+    </script>
 </body>
-
 </html>
