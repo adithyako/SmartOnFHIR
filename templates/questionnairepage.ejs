@@ -1,50 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang= "en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SMART on FHIR Questionnaire Links</title>
-    <link rel="stylesheet" href="https://smartonfhir.onrender.com/public/css/styles.css">
 </head>
 <body>
-    <div class="header">
-        <h1>Available Questionnaires</h1>
-    </div>
-
-    <div class="question-container">
-        <ul id="questionnaire-list" class="question"></ul>
-    </div>
+    <h1>Questionnaire Links</h1>
+    <ul id="questionnaire-list"></ul>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fhirclient/2.4.0/fhir-client.min.js"></script>
     <script>
-        FHIR.oauth2.ready().then(function(client) {
-            client.request("Questionnaire").then(function(data) {
-                const questionnaireList = document.getElementById('questionnaire-list');
-                data.entry.forEach(function(entry) {
-                    const questionnaire = entry.resource;
-                    const listItem = document.createElement('li');
-                    const link = document.createElement('a');
-                    
-                    link.href = "/load-form?formId=" + questionnaire.id;
-                    link.textContent = questionnaire.title || "Unnamed Questionnaire";
-                    link.style.padding = "10px";
-                    link.style.display = "block";  // Make each link fill the line
-                    link.style.color = "#333";  // Color of the text
-                    link.style.textDecoration = "none";  // Remove underline
-                    link.style.background = "linear-gradient(to right, #ffffff, #f8f8f8)";
-                    link.style.borderRadius = "5px";  // Rounded corners for the links
-                    link.style.margin = "5px 0";  // Spacing between links
-                    
-                    listItem.appendChild(link);
-                    questionnaireList.appendChild(listItem);
-                });
-            }).catch(function(error) {
-                console.error("Error fetching questionnaires:", error);
-                questionnaireList.innerHTML = '<li>Error loading questionnaires.</li>';
+       // Initialize the SMART on FHIR client
+    FHIR.oauth2.ready().then(function(client) {
+        // Fetch the questionnaire resources
+        client.request("Questionnaire").then(function(data) {
+            // Get the questionnaire list element
+            const questionnaireList = document.getElementById('questionnaire-list');
+            
+            // Iterate through the questionnaires and create links
+            data.entry.forEach(function(entry) {
+                const questionnaire = entry.resource;
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                
+                link.href = "link-to-your-questionnaire-page?questionnaireId=" + questionnaire.id;
+                link.textContent = questionnaire.title || "Unnamed Questionnaire";
+                
+                listItem.appendChild(link);
+                questionnaireList.appendChild(listItem);
             });
         }).catch(function(error) {
-            console.error("Error initializing SMART on FHIR client:", error);
+            console.error("Error fetching questionnaires:", error);
         });
+    }).catch(function(error) {
+        console.error("Error initializing SMART on FHIR client:", error);
+    });
     </script>
 </body>
 </html>
