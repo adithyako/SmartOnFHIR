@@ -40,8 +40,28 @@
                 console.error('Error:', error);
             });
         }
+
+
+        document.getElementById('formSubmitButton').addEventListener('click', () => {
+            const qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+            fetch('/submit-questionnaire', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'CSRF-Token': csrfToken // Ensure CSRF protection
+                },
+                body: JSON.stringify(qr)
+            })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = `/response-success?data=${encodeURIComponent(JSON.stringify(data))}`;
+            })
+            .catch(error => {
+                console.error('Submission Error:', error);
+            });
+        });
+
     </script>
-    
 
 
 <!--

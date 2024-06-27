@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express"); /* Accessing express module */
 const app = express(); /* app is a request handler function */
 const bodyParser = require("body-parser"); /* To handle post parameters */
@@ -64,13 +65,24 @@ process.stdin.on("readable", function () {
     }
 });
 
+
+function ensureAuthenticated(req, res, next) {
+    const token = req.cookies['accessToken'];
+    if (!token) {
+        return res.status(401).redirect('/launch');
+    }
+    next();
+}
+
+
+/*
 function ensureAuthenticated(req, res, next) {
     if (req.session.smartToken) {
         return next();
     }
     res.redirect('/launch');
 }
-
+*/
 app.get('/launch', (req, res) => {
     // let str = `<script>FHIR.oauth2.authorize({${smartSettings}});</script>`;
     // const variables = {settings: str}
@@ -101,29 +113,47 @@ app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
 });
 */
 
-app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
-    const questionnaireResponse = req.body;
-
-    // Post the QuestionnaireResponse to a FHIR server
-    fetch('https://your-fhir-server.com/QuestionnaireResponse', {
+app.post("/token", (req, res) => {
+    // Simulate token exchange logic here
+    const { authCode } = req.body;
+    fetch('https://oauthprovider.com/token', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/fhir+json'
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: JSON.stringify(questionnaireResponse)
+        body: new URLSearchParams({
+            client_id: process.env.CLIENT_ID,  // Use environment variables
+            client_secret: process.env.CLIENT_SECRET,
+            code: authCode,
+            redirect_uri: process.env.REDIRECT_URI,
+            grant_type: 'authorization_code'
+        })
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Successfully saved questionnaire response:', data);
-        // Send back the data received from the FHIR server to the client
-        res.json(data);
+        // Store the access token in an httpOnly cookie
+        res.cookie('accessToken', data.access_token, { httpOnly: true, secure: true });
+        res.redirect('/');  // Redirect to the home page or dashboard
     })
     .catch(error => {
-        console.error('Error saving questionnaire response:', error);
-        res.status(500).json({ message: "Error in saving QuestionnaireResponse" });
+        console.error('Error:', error);
+        res.status(500).send('Authentication failed');
     });
 });
 
+app.get('/load-form', ensureAuthenticated, (req, res) => {
+    const fhirClient = new FHIR.client({
+        serverUrl: process.env.FHIR_SERVER_URL,
+        token: req.cookies['accessToken']
+    });
+
+    fhirClient.request(`/Questionnaire/${req.query.formId}`).then(questionnaire => {
+        res.render('form', { formToAdd: JSON.stringify(questionnaire) });
+    }).catch(err => {
+        console.error('Failed to fetch questionnaire:', err);
+        res.status(500).send('Failed to load form');
+    });
+});
 
 
 
