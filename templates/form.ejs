@@ -25,14 +25,15 @@
         function showQR() {
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
 
-            alert(qr);
+            print(qr);
 
-            // let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(<%- formToAdd %>, 'R4');
-            // let formWithUserData = LForms.Util.mergeFHIRDataIntoLForms("QuestionnaireResponse", qr, lformsQ, "R4");
+            let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(<%- formToAdd %>, 'R4');
+            let formWithUserData = LForms.Util.mergeFHIRDataIntoLForms("QuestionnaireResponse", qr, lformsQ, "R4");
             
-            // LForms.Util.addFormToPage(formWithUserData, 'formContainer');
+            LForms.Util.addFormToPage(formWithUserData, 'formContainer');
            
         }
+        
     </script>
 
 </body>
