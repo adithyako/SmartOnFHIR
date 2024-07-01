@@ -7,8 +7,17 @@
 
 <body>
 
+    <div class="header">
+        <h1>EPIC on FHIR Questionnaire App</h1>
+    </div>
 
-    <div id=formContainer></div>
+
+    <div id=formContainer>
+        <h3>Featured Questionnaires:</h3>
+        <ul>
+            <li onclick="loadQuestionnaire('AHC HRSN Screening')">AHC HRSN Screening</li>
+        </ul>
+    </div>
 
     <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
     <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
@@ -48,52 +57,20 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'CSRF-Token': csrfToken // Ensure CSRF protection
+                    'CSRF-Token': csrfToken
                 },
                 body: JSON.stringify(qr)
             })
-            .then(response => response.json())
-            .then(data => {
-                window.location.href = `/response-success?data=${encodeURIComponent(JSON.stringify(data))}`;
-            })
-            .catch(error => {
-                console.error('Submission Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    window.location.href = `/response-success?data=${encodeURIComponent(JSON.stringify(data))}`;
+                })
+                .catch(error => {
+                    console.error('Submission Error:', error);
+                });
         });
-
     </script>
 
-<!--
-    <script>
-        LForms.Util.addFormToPage(, 'formContainer');
-
-        // Define the function for showing the QuestionnaireResponse
-        function showQR() {
-            let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
-
-            let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(, 'R4');
-            let formWithUserData = LForms.Util.mergeFHIRDataIntoLForms("QuestionnaireResponse", qr, lformsQ, "R4");
-            
-            LForms.Util.addFormToPage(formWithUserData, 'formContainer');
-            // fetch('/submit-questionnaire', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/fhir+json'
-            //     },
-            //     body: JSON.stringify(qr)
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     console.log('Success:', data);
-            // })
-            // .catch((error) => {
-            //     console.error('Error:', error);
-            //     // Handle the error appropriately
-            // });
-            
-        }
-    </script>
--->
 </body>
 
 </html>
