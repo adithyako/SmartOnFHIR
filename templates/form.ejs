@@ -46,8 +46,10 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-                // Redirect to responsedata.ejs with the server response
-                window.location.href = '/response-data?' + new URLSearchParams({ result: JSON.stringify(data) });
+                // Print the results back to the original page
+                const resultContainer = document.createElement('div');
+                resultContainer.innerHTML = `<h3>Questionnaire Response:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                document.getElementById('formContainer').appendChild(resultContainer);
             })
             .catch(error => {
                 console.error('Error:', error);
