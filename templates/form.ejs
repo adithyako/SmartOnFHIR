@@ -1,34 +1,38 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-    <link href="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/styles.css" media="screen"
-        rel="stylesheet" />
+    <link href="styles.css" media="screen" rel="stylesheet" />
 </head>
 
 <body>
-
     <div class="header">
         <h1>EPIC on FHIR Questionnaire App</h1>
     </div>
 
-
-    <div id=formContainer>
+    <div id="formContainer">
         <h3>Featured Questionnaires:</h3>
         <ul>
-            <li onclick="loadQuestionnaire('AHC HRSN Screening')">AHC HRSN Screening</li>
+            <li onclick="loadQuestionnaire()">AHC HRSN Screening</li>
         </ul>
     </div>
 
-    <ahc class="js"></ahc>
-    <button onclick="showQR()">Show FHIR QuestionnaireResponse</button>
-
+    <div id="questionnaireScripts" style="display: none;">
+        <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
+        <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
+        <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
+        <button onclick="showQR()">Show FHIR QuestionnaireResponse</button>
+    </div>
 
     <script>
-        LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
-        
+        function loadQuestionnaire() {
+            document.getElementById('questionnaireScripts').style.display = 'block';
+            LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
+        }
+
         function showQR() {
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
-            
+
             // Submitting the data to the server
             fetch('/submit-questionnaire', {
                 method: 'POST',
@@ -41,13 +45,12 @@
             .then(data => {
                 console.log('Success:', data);
                 // Redirect to responsedata.ejs with the server response
-                window.location.href = '/response-data?' + new URLSearchParams({result: JSON.stringify(data)});
+                window.location.href = '/response-data?' + new URLSearchParams({ result: JSON.stringify(data) });
             })
             .catch(error => {
                 console.error('Error:', error);
             });
         }
-
 
         document.getElementById('formSubmitButton').addEventListener('click', () => {
             const qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
@@ -59,16 +62,15 @@
                 },
                 body: JSON.stringify(qr)
             })
-                .then(response => response.json())
-                .then(data => {
-                    window.location.href = `/response-success?data=${encodeURIComponent(JSON.stringify(data))}`;
-                })
-                .catch(error => {
-                    console.error('Submission Error:', error);
-                });
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = `/response-success?data=${encodeURIComponent(JSON.stringify(data))}`;
+            })
+            .catch(error => {
+                console.error('Submission Error:', error);
+            });
         });
     </script>
-
 </body>
 
 </html>
