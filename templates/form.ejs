@@ -56,48 +56,6 @@
         }
 
         
-        function showQR() {
-            let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
-
-            // Submitting the data to the server
-            fetch('/submit-questionnaire', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(qr)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                // Print the results back to the original page
-                const resultContainer = document.createElement('div');
-                resultContainer.innerHTML = `<h3>Questionnaire Response:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
-                document.getElementById('formContainer').appendChild(resultContainer);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-
-        document.getElementById('formSubmitButton').addEventListener('click', () => {
-            const qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
-            fetch('/submit-questionnaire', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'CSRF-Token': csrfToken
-                },
-                body: JSON.stringify(qr)
-            })
-            .then(response => response.json())
-            .then(data => {
-                window.location.href = `/response-success?data=${encodeURIComponent(JSON.stringify(data))}`;
-            })
-            .catch(error => {
-                console.error('Submission Error:', error);
-            });
-        });
         
     </script>
     
