@@ -40,7 +40,9 @@
         }
 
         function submitAndRedirect() {
-            let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+            let validationRestuls = LForms.Util.validate();
+            if (validationRestuls.errors.length === 0){
+                let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
             fetch('/submit-questionnaire', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -53,6 +55,12 @@
             .catch(error => {
                 console.error('Submission Error:', error);
             });
+           
+        }else {
+            alert ('Please answer all required questions before submitting the form.');
+            console.log('Validation Errors: ', validationRestuls.errors);
+        }
+            
         }
 
         
