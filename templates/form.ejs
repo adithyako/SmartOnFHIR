@@ -19,11 +19,18 @@
         </ul>
     </div>
 
+    <div id="responseContainer">
+        <h3>Questionnaire Responses:</h3>
+        <div id="responsesList"></div>
+    </div>
+
+
+
     <div id="questionnaireScripts" style="display: none;">
         <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
         <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
         <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
-        <button onclick="showQR()">Show FHIR QuestionnaireResponse</button>
+        <button onclick="submitAndRedirect()">Submit Responses</button>
     </div>
 
     <script>
@@ -32,6 +39,23 @@
             LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
         }
 
+        function submitAndRedirect() {
+            let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+            fetch('/submit-questionnaire', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(qr)
+            })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = '/formselector';
+            })
+            .catch(error => {
+                console.error('Submission Error:', error);
+            });
+        }
+
+        /*
         function showQR() {
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
 
@@ -74,7 +98,9 @@
                 console.error('Submission Error:', error);
             });
         });
+        */
     </script>
+    
 </body>
 
 </html>

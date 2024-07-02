@@ -75,14 +75,7 @@ function ensureAuthenticated(req, res, next) {
 }
 
 
-/*
-function ensureAuthenticated(req, res, next) {
-    if (req.session.smartToken) {
-        return next();
-    }
-    res.redirect('/launch');
-}
-*/
+
 app.get('/launch', (req, res) => {
     // let str = `<script>FHIR.oauth2.authorize({${smartSettings}});</script>`;
     // const variables = {settings: str}
@@ -98,20 +91,7 @@ app.get("/app", (req, res) => {
     const variables = { formToAdd: jsonList };
     res.render("form", variables);
 });
-/*
-app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
-    const questionnaireResponse = req.body;
-    req.session.lastQuestionnaireResponse = questionnaireResponse;
-    res.json({ message: "QuestionnaireResponse received successfully" });
-});
-*/
-/*
-app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
-    const questionnaireResponse = req.body; // Make sure this data structure matches what you send
-    req.session.lastQuestionnaireResponse = questionnaireResponse;
-    res.json({ message: "QuestionnaireResponse received successfully" });
-});
-*/
+
 
 app.post("/token", (req, res) => {
     // Simulate token exchange logic here
@@ -148,7 +128,20 @@ app.get('/formselector',(req, res) => {
     res.render("formselection");
 });
 
+app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
+    const questionnaireResponse = req.body;
+    req.session.lastQuestionnaireResponse = questionnaireResponse;  // Store the response in the session for now
+    res.json({ message: "QuestionnaireResponse received successfully", data: questionnaireResponse });
+});
 
+app.get('/responses', ensureAuthenticated, (req, res) => {
+    // Assuming the responses are stored in the session or a database
+    res.render('responseList', { responses: req.session.lastQuestionnaireResponse });
+});
+
+
+/*
 app.get('/response-data', (req, res) => {
     res.render('responsedata');
 });
+*/

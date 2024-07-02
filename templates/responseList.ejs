@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="response-container">
+        <h1>Responses</h1>
+        <% if (responses) { %>
+            <ul>
+                <% responses.forEach(response => { %>
+                    <li><pre><%= JSON.stringify(response, null, 2) %></pre></li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>No responses found.</p>
+        <% } %>
+    </div>
+</body>
+</html>
