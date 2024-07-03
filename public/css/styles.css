@@ -62,33 +62,31 @@ span {
 }
 
 
-
 .container {
     display: flex;
-    justify-content: space-between;
+    width: 100%;
 }
 
-.questionnaire-list, .form-display, .saved-responses {
-    flex: 1;
-    padding: 10px;
-    margin: 5px;
-    border: 1px solid #ccc;
+.questionnaire-list {
+    width: 20%; /* Adjust based on preference */
+    border-right: 2px solid #ccc; /* Visual separator */
+    padding: 20px;
+}
+
+.form-display {
+    width: 80%; /* Adjust based on the left column */
+    padding: 20px;
+}
+
+.save-menu {
+    position: absolute;
+    top: 20px; /* Adjust as needed */
+    right: 20px; /* Adjust as needed */
 }
 
 .saved-responses {
-    flex-basis: 30%;
+    width: 30%; /* Adjust as needed */
+    padding: 10px;
+    margin: 5px;
     overflow-y: auto; /* Allow scrolling for many responses */
-}
-
-
-.header, .questionnaire-list, .form-display {
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin: 10px;
-}
-
-/* Additional styles for form and headers */
-.header, .form-display {
-    flex-grow: 1; /* Allow these elements to fill the space */
 }
