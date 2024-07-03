@@ -39,23 +39,30 @@
             document.getElementById('questionnaireScripts').style.display = 'block';
             LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
         }
-
+    
         function submitAndRedirect() {
             let validationResults = LForms.Util.validate();
-            if (validationResults.errors.length === 0) {
+            if (validationResults && validationResults.errors.length === 0) {
                 let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
                 fetch('/submit-questionnaire', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(qr)
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        window.location.href = '/formselector';
-                    })
-                    .catch(error => {
-                        console.error('Submission Error:', error);
-                    });
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .then(data => {
+                    window.location.href = '/formselector';
+                })
+                .catch(error => {
+                    console.error('Submission Error:', error);
+                    alert('Failed to submit the questionnaire. Please try again.');
+                });
             } else {
                 alert('Please answer all required questions before submitting the form.');
                 console.log('Validation Errors: ', validationResults.errors);

@@ -76,8 +76,11 @@ app.get("/app", (req, res) => {
 });
 
 app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
+    if (!req.body) {
+        return res.status(400).json({ message: "No data provided" });
+    }
     const questionnaireResponse = req.body;
-    req.session.lastQuestionnaireResponse = questionnaireResponse; // Store the response in the session for now
+    req.session.lastQuestionnaireResponse = questionnaireResponse;
     res.json({ message: "QuestionnaireResponse received successfully", data: questionnaireResponse });
 });
 
