@@ -84,8 +84,16 @@ app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
     res.json({ message: "QuestionnaireResponse received successfully", data: questionnaireResponse });
 });
 
-app.get('/responses', ensureAuthenticated, (req, res) => {
-    res.render('responseList', { responses: req.session.lastQuestionnaireResponse });
+app.post("/save-response", ensureAuthenticated, (req, res) => {
+    // Assume you have a method to save to a database or session
+    const response = req.body; // This should be extended to include more details
+    savedResponses.push(response); // Example saving mechanism
+    res.json({ status: 'success', message: "Response saved successfully" });
+});
+
+app.get("/get-saved-responses", ensureAuthenticated, (req, res) => {
+    // Assume you retrieve from a database or session
+    res.json(savedResponses);
 });
 
 app.get('/formselector', ensureAuthenticated, (req, res) => {

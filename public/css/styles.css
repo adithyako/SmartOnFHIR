@@ -65,21 +65,21 @@ span {
 
 .container {
     display: flex;
-    width: 100%;
+    justify-content: space-between;
 }
 
-/* Left column for the questionnaire list */
-.questionnaire-list {
-    width: 30%; /* Adjust the width as necessary */
-    border-right: 2px solid #ccc; /* Visual separator */
-    padding: 20px;
+.questionnaire-list, .form-display, .saved-responses {
+    flex: 1;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
 }
 
-/* Right column for the form display */
-.form-display {
-    width: 70%; /* Adjust based on the left column */
-    padding: 20px;
+.saved-responses {
+    flex-basis: 30%;
+    overflow-y: auto; /* Allow scrolling for many responses */
 }
+
 
 .header, .questionnaire-list, .form-display {
     background-color: white;
