@@ -76,12 +76,19 @@ app.get("/app", (req, res) => {
 });
 
 app.post("/save-response", ensureAuthenticated, (req, res) => {
-    const { data, format } = req.body;
-    // You might want to handle different formats differently
-    console.log(`Saving data in format: ${format}`);
-    // Add the saving logic here
-    savedResponses.push(data); // Example saving mechanism
-    res.json({ status: 'success', message: "Response saved successfully" });
+    if (!req.body || !req.body.data) {
+        console.error('No data received', req.body);
+        return res.status(400).json({ message: "No data provided" });
+    }
+    try {
+        const { data, format } = req.body;
+        console.log(`Received data for format: ${format}`, data);
+        // Assume data is saved here
+        res.json({ status: 'success', message: "Response saved successfully" });
+    } catch (error) {
+        console.error('Error saving data:', error);
+        res.status(500).json({ message: "Failed to save the data", error: error.toString() });
+    }
 });
 
 
