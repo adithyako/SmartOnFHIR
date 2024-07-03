@@ -75,21 +75,15 @@ app.get("/app", (req, res) => {
     res.render("form", variables);
 });
 
-app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
-    if (!req.body) {
-        return res.status(400).json({ message: "No data provided" });
-    }
-    const questionnaireResponse = req.body;
-    req.session.lastQuestionnaireResponse = questionnaireResponse;
-    res.json({ message: "QuestionnaireResponse received successfully", data: questionnaireResponse });
-});
-
 app.post("/save-response", ensureAuthenticated, (req, res) => {
-    // Assume you have a method to save to a database or session
-    const response = req.body; // This should be extended to include more details
-    savedResponses.push(response); // Example saving mechanism
+    const { data, format } = req.body;
+    // You might want to handle different formats differently
+    console.log(`Saving data in format: ${format}`);
+    // Add the saving logic here
+    savedResponses.push(data); // Example saving mechanism
     res.json({ status: 'success', message: "Response saved successfully" });
 });
+
 
 app.get("/get-saved-responses", ensureAuthenticated, (req, res) => {
     // Assume you retrieve from a database or session
