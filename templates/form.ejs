@@ -45,34 +45,39 @@
             document.getElementById('questionnaireScripts').style.display = 'block';
             LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
         }
-    
-        function submitAndRedirect() {
-            let validationResults = LForms.Util.validate();
-            if (validationResults && validationResults.errors.length === 0) {
-                let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
-                fetch('/submit-questionnaire', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(qr)
-                })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Network response was not ok.');
-                    }
-                })
-                .then(data => {
-                    window.location.href = '/formselector';
-                })
-                .catch(error => {
-                    console.error('Submission Error:', error);
-                    alert('Failed to submit the questionnaire. Please try again.');
+
+        function saveResponse() {
+            let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+            fetch('/save-response', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(qr)
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadSavedResponses(); // Refresh the list of saved responses
+            })
+            .catch(error => {
+                console.error('Save Error:', error);
+                alert('Failed to save the questionnaire.');
+            });
+        }
+
+        function loadSavedResponses() {
+            fetch('/get-saved-responses')
+            .then(response => response.json())
+            .then(data => {
+                const list = document.getElementById('savedResponsesList');
+                list.innerHTML = ''; // Clear current list
+                data.forEach(response => {
+                    const item = document.createElement('div');
+                    item.textContent = response.title + ' - ' + new Date(response.date).toLocaleString();
+                    list.appendChild(item);
                 });
-            } else {
-                alert('Please answer all required questions before submitting the form.');
-                console.log('Validation Errors: ', validationResults.errors);
-            }
+            })
+            .catch(error => {
+                console.error('Load Error:', error);
+            });
         }
 
     </script>
