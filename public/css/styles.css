@@ -31,12 +31,11 @@
     background-image: linear-gradient(to bottom, rgb(255, 255, 255), rgb(255, 3, 3));
 }
 
-/* Global body styles, assuming you want the entire page to be flex-contained */
 body {
     display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Ensure it fills at least the whole height of the viewport */
-    margin: 0; /* Remove default margin */
+    flex-direction: row;  /* Change direction to row for side-by-side layout */
+    min-height: 100vh;
+    margin: 0;
 }
 
 .submitButton {
@@ -60,4 +59,36 @@ body {
 span {
     font-size: 20px;
     font-weight: bold;
+}
+
+
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+/* Left column for the questionnaire list */
+.questionnaire-list {
+    width: 30%; /* Adjust the width as necessary */
+    border-right: 2px solid #ccc; /* Visual separator */
+    padding: 20px;
+}
+
+/* Right column for the form display */
+.form-display {
+    width: 70%; /* Adjust based on the left column */
+    padding: 20px;
+}
+
+.header, .questionnaire-list, .form-display {
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 10px;
+}
+
+/* Additional styles for form and headers */
+.header, .form-display {
+    flex-grow: 1; /* Allow these elements to fill the space */
 }

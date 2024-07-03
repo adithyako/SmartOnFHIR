@@ -10,12 +10,16 @@
     <div class="header">
         <h1>EPIC on FHIR Questionnaire App</h1>
     </div>
-
-    <div id="formContainer">
-        <h3>Featured Questionnaires:</h3>
-        <ul>
-            <li onclick="loadQuestionnaire()">AHC HRSN Screening</li>
-        </ul>
+    <div class="container">
+        <div class="questionnaire-list">
+            <h3>Featured Questionnaires:</h3>
+            <ul>
+                <li onclick="loadQuestionnaire()">AHC HRSN Screening</li>
+            </ul>
+        </div>
+        <div class="form-display" id="formContainer">
+            <!-- Form will be loaded here -->
+        </div>
     </div>
 
     <div id="responseContainer">
