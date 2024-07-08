@@ -25,8 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.listen(portNumber, () => {
-    console.log(`Web server started and running at https://smartonfhir.onrender.com/index`);
-});
+    console.log(`Web server started and running at https://smartonfhir.onrender.com/index`);});
 
 process.stdin.setEncoding("utf8");
 
