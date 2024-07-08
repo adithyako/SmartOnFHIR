@@ -5,35 +5,43 @@
     <link href="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/styles.css" media="screen" rel="stylesheet" />
 </head>
 <body>
-    <div class="header">
-        <h1>EPIC on FHIR Questionnaire App</h1>
-    </div>
-    <div class="container">
-        <div class="questionnaire-list">
-            <h3>Featured Questionnaires:</h3>
-            <ul>
-                <li onclick="loadQuestionnaire()">AHC HRSN Screening</li>
-            </ul>
+
+    <div class="questionnaire-container">
+        <div class="header">
+            <h1>EPIC on FHIR Questionnaire App</h1>
         </div>
-        <div class="form-display" id="formContainer">
-            <!-- Form will be loaded here -->
+        <div class="container">
+            <div class="questionnaire-list">
+                <h3>Featured Questionnaires:</h3>
+                <ul>
+                    <li onclick="loadQuestionnaire()">AHC HRSN Screening</li>
+                </ul>
+            </div>
+            <div class="form-display" id="formContainer">
+                <!-- Form will be loaded here -->
+            </div>
         </div>
-    </div>
-    <div class="save-menu">
-        <select onchange="saveResponse(this.value)">
-            <option value="">Select Save Option</option>
-            <option value="FHIR QuestionnaireResponse (Epic)">FHIR QuestionnaireResponse (Epic)</option>
-            <!-- Add more options as needed -->
-        </select>
-    </div>
-    <div id="responseContainer">
-        <h3>Questionnaire Responses:</h3>
-        <div id="responsesList"></div>
+        <div id="responseContainer">
+            <h3>Questionnaire Responses:</h3>
+            <div id="responsesList"></div>
+        </div>
+
     </div>
 
-    <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
-    <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
-    <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
+
+    <div class="AHC">
+        <div class="save-menu">
+            <select onchange="saveResponse(this.value)">
+                <option value="">Select Save Option</option>
+                <option value="FHIR QuestionnaireResponse (Epic)">FHIR QuestionnaireResponse (Epic)</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+        <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
+        <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
+        <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
+    </div>
+
     <script>
         function loadQuestionnaire() {
             document.getElementById('formContainer').style.display = 'block';

@@ -90,3 +90,14 @@ span {
     margin: 5px;
     overflow-y: auto; /* Allow scrolling for many responses */
 }
+
+.questionnaire-container, .AHC {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    position: relative; /* Ensure they are positioned in the flow of the document */
+    z-index: 1; /* Higher than the video to ensure they are visible */
+}
