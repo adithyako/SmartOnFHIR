@@ -48,6 +48,26 @@
             LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
         }
 
+        function validateForm() {
+            const form = LForms.Util.getUserData('formContainer');
+            let isValid = true;
+            let missingFields = [];
+
+            form.items.forEach(item => {
+                if (item.required && !item.value) {
+                    isValid = false;
+                    missingFields.push(item.question);
+                }
+            });
+
+            if (!isValid) {
+                alert('Please fill in the following required fields: ' + missingFields.join(', '));
+            }
+
+            return isValid;
+        }
+
+
         function saveResponse(format) {
             if (!format) return; // No action if default option is selected
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
