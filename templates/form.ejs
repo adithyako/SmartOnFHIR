@@ -61,7 +61,7 @@
                 return;
             }
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
-            const fhirEndpoint = 'https://fhir.epic.com/interconnect-fhir-oauth/QuestionnaireResponse'; // Replace with actual FHIR endpoint for EPIC
+            const fhirEndpoint = 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/QuestionnaireResponse';
             try {
                 let response = await fetch(fhirEndpoint, {
                     method: 'POST',
