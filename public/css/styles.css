@@ -1,103 +1,91 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column; /* Column direction for a vertical layout */
+    align-items: center; /* Center the content horizontally */
+}
 
 .header {
     font-family: cursive, Lucida handwriting;
     font-size: 30px;
     text-align: center;
-    background-color: white; /* Or any color you want */
-    width: 50%; /* Or the width you prefer */
-    margin: 10px auto; /* Centers the box */
-    padding: 5px; /* Spacing inside the box */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow around the box */
-    border-radius: 20px; /* Rounded corners */
+    width: 80%; /* Adjusted width */
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 20px;
     background-image: linear-gradient(to top, rgba(255, 255, 255), rgba(255,0,0,1));
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.question {
-    background-color: white; /* Or any color you want */
-    width: 80%; /* Or the width you prefer */
-    margin: 20px auto; /* Centers the box */
-    padding: 20px; /* Spacing inside the box */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow around the box */
-    border-radius: 8px; /* Rounded corners */
+.questionnaire-container {
+    width: 90%; /* Adjust based on your layout */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    padding: 20px;
 }
 
-.question-container {
-    background-color: white; /* Or any color you want */
-    width: 50%; /* Or the width you prefer */
-    margin: 50px auto; /* Centers the box */
-    padding: 10px; /* Spacing inside the box */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow around the box */
-    border-radius: 8px; /* Rounded corners */
-    background-image: linear-gradient(to bottom, rgb(255, 255, 255), rgb(255, 3, 3));
-}
-
-body {
+.container {
     display: flex;
-    flex-direction: row;  /* Change direction to row for side-by-side layout */
-    min-height: 100vh;
-    margin: 0;
+    flex-direction: row;
+    width: 100%;
+}
+
+.questionnaire-list {
+    width: 20%;
+    border-right: 2px solid #ccc;
+    padding: 20px;
+    box-sizing: border-box; /* Ensures padding is included in width */
+}
+
+.form-display {
+    width: 80%;
+    padding: 20px;
+    box-sizing: border-box; /* Ensures padding is included in width */
+}
+
+#responseContainer {
+    width: 90%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.AHC {
+    width: 90%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.save-menu {
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
 
 .submitButton {
-    margin-top: auto; /* Pushes the button to the bottom */
-    width: 100%; /* Full width button */
+    width: 100%;
     text-align: center;
-    padding: 10px 0; /* Adds some vertical padding */
-    background-color: #f00; /* Red background for visibility, change as needed */
-    color: white; /* Text color for visibility, change as needed */
-    border: none; /* Removes border */
-    cursor: pointer; /* Hand cursor on hover */
-}
-
-/* Ensure content does not overflow the page height */
-#formContainer {
-    overflow-y: auto; /* Allows scrolling within the form container */
-    padding: 20px; /* Adds padding inside the container */
-    flex: 1; /* Allows the container to grow and fill available space */
+    padding: 10px 0;
+    background-color: #f00;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px; /* Ensure button is separated from other content */
 }
 
 span {
     font-size: 20px;
     font-weight: bold;
-}
-
-
-.container {
-    display: flex;
-    width: 100%;
-}
-
-.questionnaire-list {
-    width: 20%; /* Adjust based on preference */
-    border-right: 2px solid #ccc; /* Visual separator */
-    padding: 20px;
-}
-
-.form-display {
-    width: 80%; /* Adjust based on the left column */
-    padding: 20px;
-}
-
-.save-menu {
-    position: absolute;
-    top: 20px; /* Adjust as needed */
-    right: 20px; /* Adjust as needed */
-}
-
-.saved-responses {
-    width: 30%; /* Adjust as needed */
-    padding: 10px;
-    margin: 5px;
-    overflow-y: auto; /* Allow scrolling for many responses */
-}
-
-.questionnaire-container, .AHC {
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-    width: 80%;
-    margin: 20px auto;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    position: relative; /* Ensure they are positioned in the flow of the document */
-    z-index: 1; /* Higher than the video to ensure they are visible */
 }
