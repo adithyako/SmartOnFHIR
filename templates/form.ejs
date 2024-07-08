@@ -9,39 +9,38 @@
         <h1>EPIC on FHIR Questionnaire App</h1>
     </div>
 
-
     <div class="pagebox">
-    <div class="questionnaire-container">
-        <div class="container">
-            <div class="questionnaire-list">
-                <h3>Featured Questionnaires:</h3>
-                <ul>
-                    <li onclick="loadQuestionnaire()">AHC HRSN Screening</li>
-                </ul>
+        <div class="questionnaire-container">
+            <div class="container">
+                <div class="questionnaire-list">
+                    <h3>Featured Questionnaires:</h3>
+                    <ul>
+                        <li onclick="loadQuestionnaire()">AHC HRSN Screening</li>
+                    </ul>
+                </div>
+                <div class="form-display" id="formContainer">
+                    <!-- Form will be loaded here -->
+                </div>
             </div>
-            <div class="form-display" id="formContainer">
-                <!-- Form will be loaded here -->
+            <div id="responseContainer">
+                <h3>Questionnaire Responses:</h3>
+                <div id="responsesList"></div>
             </div>
         </div>
-        <div id="responseContainer">
-            <h3>Questionnaire Responses:</h3>
-            <div id="responsesList"></div>
-        </div>
-    </div>
 
-    <div class="AHC">
-        <div class="save-menu">
-            <select onchange="saveResponse(this.value)">
-                <option value="">Select Save Option</option>
-                <option value="FHIR QuestionnaireResponse (Epic)">FHIR QuestionnaireResponse (Epic)</option>
-                <!-- Add more options as needed -->
-            </select>
+        <div class="AHC">
+            <div class="save-menu">
+                <select onchange="saveResponse(this.value)">
+                    <option value="">Select Save Option</option>
+                    <option value="FHIR QuestionnaireResponse (Epic)">FHIR QuestionnaireResponse (Epic)</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+            <link href="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/styles.css" media="screen" rel="stylesheet" />
+            <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
+            <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
+            <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
         </div>
-        <link href="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/styles.css" media="screen" rel="stylesheet" />
-        <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
-        <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
-        <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
-    </div>
     </div>
 
     <script>
@@ -50,22 +49,41 @@
             LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
         }
 
-        function saveResponse(format) {
+        async function saveResponse(format) {
             if (!format) return; // No action if default option is selected
+
+            // Assuming you have already obtained the OAuth2 token
+            let token = sessionStorage.getItem('oauth2_token');
+
+            if (!token) {
+                alert('OAuth2 token is missing.');
+                return;
+            }
+
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
-            fetch('/save-response', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ data: qr, format: format })
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('Response saved successfully');
-            })
-            .catch(error => {
+
+            try {
+                let response = await fetch('/save-response', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ data: qr, format: format })
+                });
+
+                let data = await response.json();
+
+                if (response.ok) {
+                    alert('Response saved successfully');
+                } else {
+                    console.error('Save Error:', data);
+                    alert('Failed to save the questionnaire.');
+                }
+            } catch (error) {
                 console.error('Save Error:', error);
                 alert('Failed to save the questionnaire.');
-            });
+            }
         }
     </script>
 </body>

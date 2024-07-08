@@ -10,9 +10,10 @@ const fetch = require('node-fetch');
 const fs = require("fs");
 
 app.use(session({
-    secret: "my secret",
+    secret: "FyXdbgJdfr+2Xz1Gf1UtlkCf4xMi4dI6n88p+/9rdoTJJn9TETruTioyyeQMCWJuhlEdQOsVLMLn1dcVC/tiDg==",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: { secure: false } // use secure: true in production
 }));
 
 app.set("views", path.resolve(__dirname, "templates"));
