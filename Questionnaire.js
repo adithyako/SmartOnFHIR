@@ -2,15 +2,12 @@ require('dotenv').config();
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const portNumber = process.env.PORT || 3000;
+const portNumber = 3000;
 const path = require("path");
 const smart = require("fhirclient");
 const session = require("express-session");
 const fetch = require('node-fetch');
 const fs = require("fs");
-
-// Serve static files from the 'public' directory
-app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use(session({
     secret: "my secret",
@@ -23,9 +20,11 @@ app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use('/public', express.static('public'));
 
 app.listen(portNumber, () => {
-    console.log(`Web server started and running at https://smartonfhir.onrender.com/index`);});
+    console.log(`Web server started and running at https://smartonfhir.onrender.com/index`);
+});
 
 process.stdin.setEncoding("utf8");
 
@@ -35,16 +34,9 @@ if (process.argv.length != 3) {
 }
 
 const listName = process.argv[2];
-let jsonList;
-
-try {
-    jsonList = fs.readFileSync(listName, "utf-8");
-} catch (error) {
-    console.error("Error reading JSON file:", error);
-    process.exit(1);
-}
-
 const prompt = "Type stop to shutdown the server: ";
+const jsonList = fs.readFileSync(listName, "utf-8");
+
 process.stdout.write(prompt);
 process.stdin.on("readable", function () {
     const dataInput = process.stdin.read();
@@ -77,30 +69,26 @@ app.get('/index', (req, res) => {
     res.render('index');
 });
 
-app.get("/app", ensureAuthenticated, (req, res) => {
-    smart(req, res).ready().then(client => {
-        const variables = { formToAdd: jsonList };
-        res.render("form", variables);
-    }).catch(err => {
-        console.error("Error initializing SMART client:", err);
-        res.status(500).send("Error initializing SMART client");
-    });
+app.get("/app", (req, res) => {
+    smart(req, res).ready().then(client => handler(client, res));
+    const variables = { formToAdd: jsonList };
+    res.render("form", variables);
+});
+
+app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
+    if (!req.body) {
+        return res.status(400).json({ message: "No data provided" });
+    }
+    const questionnaireResponse = req.body;
+    req.session.lastQuestionnaireResponse = questionnaireResponse;
+    res.json({ message: "QuestionnaireResponse received successfully", data: questionnaireResponse });
 });
 
 app.post("/save-response", ensureAuthenticated, (req, res) => {
-    if (!req.body || !req.body.data) {
-        console.error('No data received', req.body);
-        return res.status(400).json({ message: "No data provided" });
-    }
-    try {
-        const { data, format } = req.body;
-        console.log(`Received data for format: ${format}`, data);
-        // Assume data is saved here
-        res.json({ status: 'success', message: "Response saved successfully" });
-    } catch (error) {
-        console.error('Error saving data:', error);
-        res.status(500).json({ message: "Failed to save the data", error: error.toString() });
-    }
+    // Assume you have a method to save to a database or session
+    const response = req.body; // This should be extended to include more details
+    savedResponses.push(response); // Example saving mechanism
+    res.json({ status: 'success', message: "Response saved successfully" });
 });
 
 app.get("/get-saved-responses", ensureAuthenticated, (req, res) => {
