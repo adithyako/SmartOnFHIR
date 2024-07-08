@@ -12,7 +12,8 @@
         FHIR.oauth2.authorize({
             clientId: "866027d0-4c7a-478e-8a0a-cc6849c246b5",
             scope: "launch/patient openid fhirUser patient/*.read Questionnaire.Read Questionnaire.Search QuestionnaireResponse.Read QuestionnaireResponse.Create QuestionnaireResponse.Search Patient.Read Patient.Search Patient.Create",
-            redirectUri: "https://smartonfhir.onrender.com/app"
+            redirectUri: "https://smartonfhir.onrender.com/app",
+            iss: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4'
         });
     </script>
 </body>
