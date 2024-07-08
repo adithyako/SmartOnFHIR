@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="https://smartonfhir.onrender.com/public/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="https://smartonfhir.onrender.com/public/css/form.css">
 </head>
 <body>
 
@@ -10,8 +10,13 @@
     </div>
 
     <div class="pagebox">
+<<<<<<< HEAD
         <div class="questionnaire-container">
             <div class="container">
+=======
+        <div class="container">
+            <div class="questionnaire-container">
+>>>>>>> b3db3e8610b5f66a563b2d4df2f65991557ca7fd
                 <div class="questionnaire-list">
                     <h3>Featured Questionnaires:</h3>
                     <ul>
@@ -21,6 +26,7 @@
                 <div class="form-display" id="formContainer">
                     <!-- Form will be loaded here -->
                 </div>
+<<<<<<< HEAD
             </div>
             <div id="responseContainer">
                 <h3>Questionnaire Responses:</h3>
@@ -41,6 +47,27 @@
             <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
             <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
         </div>
+=======
+                <div id="responseContainer">
+                    <h3>Questionnaire Responses:</h3>
+                    <div id="responsesList"></div>
+                </div>
+            </div>
+            <div class="AHC">
+                <div class="save-menu">
+                    <select onchange="saveResponse(this.value)">
+                        <option value="">Select Save Option</option>
+                        <option value="FHIR QuestionnaireResponse (Epic)">FHIR QuestionnaireResponse (Epic)</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+                <link href="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/styles.css" media="screen" rel="stylesheet" />
+                <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
+                <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
+                <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
+            </div>
+        </div>
+>>>>>>> b3db3e8610b5f66a563b2d4df2f65991557ca7fd
     </div>
 
     <script>
@@ -49,7 +76,31 @@
             LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
         }
 
+<<<<<<< HEAD
         async function saveResponse(format) {
+=======
+        function validateForm() {
+            const form = LForms.Util.getUserData('formContainer');
+            let isValid = true;
+            let missingFields = [];
+
+            form.items.forEach(item => {
+                if (item.required && !item.value) {
+                    isValid = false;
+                    missingFields.push(item.question);
+                }
+            });
+
+            if (!isValid) {
+                alert('Please fill in the following required fields: ' + missingFields.join(', '));
+            }
+
+            return isValid;
+        }
+
+
+        function saveResponse(format) {
+>>>>>>> b3db3e8610b5f66a563b2d4df2f65991557ca7fd
             if (!format) return; // No action if default option is selected
 
             // Assuming you have already obtained the OAuth2 token

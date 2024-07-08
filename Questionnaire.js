@@ -76,22 +76,21 @@ app.get("/app", (req, res) => {
     res.render("form", variables);
 });
 
-app.post("/save-response", ensureAuthenticated, (req, res) => {
-    if (!req.body || !req.body.data) {
-        console.error('No data received', req.body);
+app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
+    if (!req.body) {
         return res.status(400).json({ message: "No data provided" });
     }
-    try {
-        const { data, format } = req.body;
-        console.log(`Received data for format: ${format}`, data);
-        // Assume data is saved here
-        res.json({ status: 'success', message: "Response saved successfully" });
-    } catch (error) {
-        console.error('Error saving data:', error);
-        res.status(500).json({ message: "Failed to save the data", error: error.toString() });
-    }
+    const questionnaireResponse = req.body;
+    req.session.lastQuestionnaireResponse = questionnaireResponse;
+    res.json({ message: "QuestionnaireResponse received successfully", data: questionnaireResponse });
 });
 
+app.post("/save-response", ensureAuthenticated, (req, res) => {
+    // Assume you have a method to save to a database or session
+    const response = req.body; // This should be extended to include more details
+    savedResponses.push(response); // Example saving mechanism
+    res.json({ status: 'success', message: "Response saved successfully" });
+});
 
 app.get("/get-saved-responses", ensureAuthenticated, (req, res) => {
     // Assume you retrieve from a database or session

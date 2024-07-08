@@ -4,63 +4,67 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     display: flex;
-    flex-direction: column; /* Column direction for a vertical layout */
-    align-items: center; /* Center the content horizontally */
+    flex-direction: column;
+    align-items: center;
 }
 
 .header {
     font-family: cursive, Lucida handwriting;
     font-size: 30px;
     text-align: center;
-    width: 80%; /* Adjusted width */
+    width: 80%;
     margin: 10px auto;
     padding: 10px;
     border-radius: 20px;
-    background-image: linear-gradient(to top, rgba(255, 255, 255), rgba(255,0,0,1));
+    background-image: linear-gradient(to top, rgba(255, 255, 255), rgba(255, 0, 0, 1));
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .pagebox {
-    display: flex; /* Aligns child divs side by side */
-    justify-content: space-around; /* Evenly spaces the child divs */
-    align-items: flex-start; /* Aligns items to the start of the container */
-    width: 100%; /* Takes the full width of the parent */
-    margin: 10px auto; /* Center the container and add vertical margin */
-    padding: 20px; /* Add some padding around the containers */
-}
-
-.AHC, .questionnaire-container {
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-    width: 30%;
-    margin: 10px;
-    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 0px;
-    position: relative; /* Ensure they are positioned in the flow of the document */
-    display: left;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
 }
 
 .container {
     display: flex;
     flex-direction: row;
     width: 100%;
+    justify-content: space-between;
+}
+
+.questionnaire-container {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 60%;
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .questionnaire-list {
-    width: 20%;
+    width: 100%;
     border-right: 2px solid #ccc;
     padding: 20px;
-    box-sizing: border-box; /* Ensures padding is included in width */
+    box-sizing: border-box;
 }
 
 .form-display {
-    width: 60%; /* Adjusted width to make space for the .AHC div */
+    width: 100%;
     padding: 20px;
-    box-sizing: border-box; /* Ensures padding is included in width */
+    box-sizing: border-box;
 }
 
 #responseContainer {
-    width: 90%;
+    width: 100%;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -68,10 +72,20 @@ body {
     padding: 20px;
 }
 
-
+.AHC {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 30%;
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
 
 .save-menu {
-    margin-bottom: 10px; /* Space between the select menu and other content */
+    margin-bottom: 10px;
 }
 
 .submitButton {
@@ -82,7 +96,7 @@ body {
     color: white;
     border: none;
     cursor: pointer;
-    margin-top: 20px; /* Ensure button is separated from other content */
+    margin-top: 20px;
 }
 
 span {
