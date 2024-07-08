@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="https://smartonfhir.onrender.com/public/css/styles.css"> 
+    <link rel="stylesheet" type="text/css" href="https://smartonfhir.onrender.com/public/css/styles.css">
 </head>
 <body>
 
@@ -20,25 +20,25 @@
             <div class="form-display" id="formContainer">
                 <!-- Form will be loaded here -->
             </div>
-            <div class="AHC">
-                <div class="save-menu">
-                    <select onchange="saveResponse(this.value)">
-                        <option value="">Select Save Option</option>
-                        <option value="FHIR QuestionnaireResponse (Epic)">FHIR QuestionnaireResponse (Epic)</option>
-                        <!-- Add more options as needed -->
-                    </select>
-                </div>
-                <link href="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/styles.css" media="screen" rel="stylesheet" />
-                <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
-                <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
-                <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
-            </div>
+        </div>
+        <div id="responseContainer">
+            <h3>Questionnaire Responses:</h3>
+            <div id="responsesList"></div>
         </div>
     </div>
 
-    <div id="responseContainer">
-        <h3>Questionnaire Responses:</h3>
-        <div id="responsesList"></div>
+    <div class="AHC">
+        <div class="save-menu">
+            <select onchange="saveResponse(this.value)">
+                <option value="">Select Save Option</option>
+                <option value="FHIR QuestionnaireResponse (Epic)">FHIR QuestionnaireResponse (Epic)</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+        <link href="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/styles.css" media="screen" rel="stylesheet" />
+        <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
+        <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
+        <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
     </div>
 
     <script>
