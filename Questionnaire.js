@@ -10,7 +10,7 @@ const fetch = require('node-fetch');
 const fs = require("fs");
 
 app.use(session({
-    secret: "K8phPl4d119yMe4PPvxsJTne2Orf+UexdcPXJwJj0VCBnUHsEpBJIjZQ/0pFNBzDhAgV7pdn+KyELjEumZVDFQ==",
+    secret: "OjvHqpeL9QOo+hYKD9JsYUt6udihc1/LcaUPNwsUz7eqO3mhsJPQI19c0osIH3nPOsIs2wZhNGlXtszWggPrpw==",
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false } // use secure: true in production

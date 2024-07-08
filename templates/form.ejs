@@ -7,11 +7,9 @@
     <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
 </head>
 <body>
-
     <div class="header">
         <h1>EPIC on FHIR Questionnaire App</h1>
     </div>
-
     <div class="pagebox">
         <div class="questionnaire-container">
             <div class="container">
@@ -30,7 +28,6 @@
                 <div id="responsesList"></div>
             </div>
         </div>
-
         <div class="AHC">
             <div class="save-menu">
                 <select onchange="saveResponse(this.value)">
@@ -45,51 +42,41 @@
             <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
         </div>
     </div>
-
     <script>
-        // Retrieve and store the OAuth2 token in sessionStorage
         FHIR.oauth2.ready().then(client => {
             const token = client.state.tokenResponse.access_token;
             sessionStorage.setItem('oauth2_token', token);
         }).catch(error => {
             console.error('Error during OAuth2 token exchange:', error);
         });
-
         function loadQuestionnaire() {
             document.getElementById('formContainer').style.display = 'block';
             LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
         }
-
         async function saveResponse(format) {
             if (!format) return; // No action if default option is selected
-
-            // Retrieve the OAuth2 token from sessionStorage
             let token = sessionStorage.getItem('oauth2_token');
-
             if (!token) {
                 alert('OAuth2 token is missing.');
                 return;
             }
-
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
-
+            const fhirEndpoint = 'https://fhir.epic.com/interconnect-fhir-oauth/QuestionnaireResponse'; // Replace with actual FHIR endpoint for EPIC
             try {
-                let response = await fetch('/save-response', {
+                let response = await fetch(fhirEndpoint, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/fhir+json', // Make sure the content type is correct for FHIR
                         'Authorization': 'Bearer ' + token
                     },
-                    body: JSON.stringify({ data: qr, format: format })
+                    body: JSON.stringify(qr)
                 });
-
                 let data = await response.json();
-
                 if (response.ok) {
                     alert('Response saved successfully');
                 } else {
                     console.error('Save Error:', data);
-                    alert('Failed to save the questionnaire.');
+                    alert('Failed to save the questionnaire. ' + data.issue[0].details.text);
                 }
             } catch (error) {
                 console.error('Save Error:', error);
