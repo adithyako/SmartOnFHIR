@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8" />
+    <title>EPIC on FHIR Questionnaire App</title>
     <link rel="stylesheet" type="text/css" href="https://smartonfhir.onrender.com/public/css/form.css">
+    <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
 </head>
 <body>
 
@@ -44,6 +47,14 @@
     </div>
 
     <script>
+        // Retrieve and store the OAuth2 token in sessionStorage
+        FHIR.oauth2.ready().then(client => {
+            const token = client.state.tokenResponse.access_token;
+            sessionStorage.setItem('oauth2_token', token);
+        }).catch(error => {
+            console.error('Error during OAuth2 token exchange:', error);
+        });
+
         function loadQuestionnaire() {
             document.getElementById('formContainer').style.display = 'block';
             LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
@@ -52,7 +63,7 @@
         async function saveResponse(format) {
             if (!format) return; // No action if default option is selected
 
-            // Assuming you have already obtained the OAuth2 token
+            // Retrieve the OAuth2 token from sessionStorage
             let token = sessionStorage.getItem('oauth2_token');
 
             if (!token) {
