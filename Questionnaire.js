@@ -10,7 +10,7 @@ const fetch = require('node-fetch');
 const fs = require("fs");
 
 app.use(session({
-    secret: "OjvHqpeL9QOo+hYKD9JsYUt6udihc1/LcaUPNwsUz7eqO3mhsJPQI19c0osIH3nPOsIs2wZhNGlXtszWggPrpw==",
+    secret: "Ddf8m2LRU98fo/LhpOvds+ZdFrpIzDQUkgp0ebu/9sKspaEKvPBfV/E7n8JQ6aw6pMU0CurzWj05TQjueYHjVA==",
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false } // use secure: true in production
@@ -54,14 +54,6 @@ process.stdin.on("readable", function () {
     }
 });
 
-function ensureAuthenticated(req, res, next) {
-    const token = req.session.accessToken;
-    if (!token) {
-        return res.status(401).redirect('/launch');
-    }
-    next();
-}
-
 app.get('/launch', (req, res) => {
     res.render('launch');
 });
@@ -76,27 +68,9 @@ app.get("/app", (req, res) => {
     res.render("form", variables);
 });
 
-app.post("/submit-questionnaire", ensureAuthenticated, (req, res) => {
-    if (!req.body) {
-        return res.status(400).json({ message: "No data provided" });
-    }
-    const questionnaireResponse = req.body;
-    req.session.lastQuestionnaireResponse = questionnaireResponse;
-    res.json({ message: "QuestionnaireResponse received successfully", data: questionnaireResponse });
-});
-
-app.post("/save-response", ensureAuthenticated, (req, res) => {
+app.post("/save-response", (req, res) => {
     // Assume you have a method to save to a database or session
     const response = req.body; // This should be extended to include more details
     savedResponses.push(response); // Example saving mechanism
     res.json({ status: 'success', message: "Response saved successfully" });
-});
-
-app.get("/get-saved-responses", ensureAuthenticated, (req, res) => {
-    // Assume you retrieve from a database or session
-    res.json(savedResponses);
-});
-
-app.get('/formselector', ensureAuthenticated, (req, res) => {
-    res.render("formselection");
 });

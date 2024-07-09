@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8" />
     <title>EPIC on FHIR Questionnaire App</title>
-    <link rel="stylesheet" type="text/css" href="https://smartonfhir.onrender.com/public/css/form.css">
     <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
 </head>
 <body>
@@ -47,11 +46,21 @@
     </div>
 
     <script>
-        FHIR.oauth2.ready(client => client.request(client.user.fhirUser));
+        let patientId;
+
+        // OAuth2 Authorization and Token Storage
+        FHIR.oauth2.ready().then(client => {
+            const token = client.state.tokenResponse.access_token;
+            sessionStorage.setItem('oauth2_token', token);
+            patientId = client.patient.id;
+        }).catch(error => {
+            console.error('Error during OAuth2 token exchange:', error);
+            alert('OAuth2 token exchange failed. Please check the console for details.');
+        });
 
         function loadQuestionnaire() {
             document.getElementById('formContainer').style.display = 'block';
-            LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
+            LForms.Util.addFormToPage('<%- formToAdd %>', 'formContainer');
         }
 
         async function saveResponse(format) {
@@ -66,15 +75,18 @@
             }
 
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+            qr.subject = {
+                reference: `Patient/${patientId}`
+            };
 
             try {
-                let response = await fetch('/save-response', {
+                let response = await fetch('https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/QuestionnaireResponse', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/fhir+json',
                         'Authorization': 'Bearer ' + token
                     },
-                    body: JSON.stringify({ data: qr, format: format })
+                    body: JSON.stringify(qr)
                 });
 
                 let data = await response.json();
