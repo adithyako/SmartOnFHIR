@@ -4,8 +4,8 @@
 
     
     <meta charset="UTF-8" />
-    <link rel="stylesheet" type="text/css" href="https://smartonfhir.onrender.com/public/css/form.css">
     <title>EPIC on FHIR Questionnaire App</title>
+    <link rel="stylesheet" type="text/css" href="https://smartonfhir.onrender.com/public/css/form.css">
     <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
 </head>
 <body>
@@ -49,49 +49,68 @@
     </div>
 
     <script>
-        let patientId;
-
-        // OAuth2 Authorization and Token Storage
-        FHIR.oauth2.ready().then(client => {
-            const token = client.state.tokenResponse.access_token;
-            sessionStorage.setItem('oauth2_token', token);
-            patientId = client.patient.id;
-        }).catch(error => {
-            console.error('Error during OAuth2 token exchange:', error);
-            alert('OAuth2 token exchange failed. Please check the console for details.');
-        });
+        FHIR.oauth2.ready(client => client.request(client.user.fhirUser));
 
         function loadQuestionnaire() {
             document.getElementById('formContainer').style.display = 'block';
-            LForms.Util.addFormToPage('<%- formToAdd %>', 'formContainer');
+            LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
         }
 
         async function saveResponse(format) {
 
+
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+            const formData = JSON.stringify(userProfile, null, 2);
+            const filePath = 'qr.json';
 
             try {
-                let response = await fetch('/save-response', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    },
-                    body: JSON.stringify({ data: qr, format: format })
-                });
+                fs.writeFileSync(filePath, formData);
+                console.log('JSON data saved to file successfully.');
+            } catch (error) {
+                console.error('Error writing JSON data to file:', error);
+            }
+            
+            // if (!format) return; // No action if default option is selected
 
-        //         let data = await response.json();
+            // // Retrieve the OAuth2 token from sessionStorage
+            // let token = sessionStorage.getItem('oauth2_token');
 
-        //         if (response.ok) {
-        //             alert('Response saved successfully');
-        //         } else {
-        //             console.error('Save Error:', data);
-        //             alert('Failed to save the questionnaire.');
-        //         }
-        //     } catch (error) {
-        //         console.error('Save Error:', error);
-        //         alert('Failed to save the questionnaire.');
-        //     }
+
+
+
+
+
+
+
+            // if (!token) {
+            //     alert('OAuth2 token is missing.');
+            //     return;
+            // }
+
+            // let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+
+            // try {
+            //     let response = await fetch('/save-response', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             'Authorization': 'Bearer ' + token
+            //         },
+            //         body: JSON.stringify({ data: qr, format: format })
+            //     });
+
+            //     let data = await response.json();
+
+            //     if (response.ok) {
+            //         alert('Response saved successfully');
+            //     } else {
+            //         console.error('Save Error:', data);
+            //         alert('Failed to save the questionnaire.');
+            //     }
+            // } catch (error) {
+            //     console.error('Save Error:', error);
+            //     alert('Failed to save the questionnaire.');
+            // }
         }
     </script>
 </body>
