@@ -47,14 +47,7 @@
     </div>
 
     <script>
-        // Retrieve and store the OAuth2 token in sessionStorage
-        FHIR.oauth2.ready().then(client => {
-            const token = client.state.tokenResponse.access_token;
-            console.log('OAuth2 token received:', token); // Log the token
-            sessionStorage.setItem('oauth2_token', token);
-        }).catch(error => {
-            console.error('Error during OAuth2 token exchange:', error); // Log the error
-        });
+        FHIR.oauth2.ready(client => client.request(client.user.fhirUser));
 
         function loadQuestionnaire() {
             document.getElementById('formContainer').style.display = 'block';
