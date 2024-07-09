@@ -58,7 +58,7 @@
             if (!format) return; // No action if default option is selected
 
             // Retrieve the OAuth2 token from sessionStorage
-            let token = sessionStorage.getItem('oauth2_token');
+            let token = <%- auth %>;
 
             if (!token) {
                 alert('OAuth2 token is missing.');
