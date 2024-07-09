@@ -16,18 +16,15 @@ app.use(session({
     cookie: { secure: false } // use secure: true in production
 }));
 
-
 app.set("views", path.resolve(__dirname, "templates"));
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.use(express.static(path.join(__dirname, 'public')));
-
+app.use('/public', express.static('public'));
 
 app.listen(portNumber, () => {
-    console.log(`Web server started and running at https://smartonfhir.onrender.com/`);
+    console.log(`Web server started and running at https://smartonfhir.onrender.com/index`);
 });
 
 process.stdin.setEncoding("utf8");
@@ -57,19 +54,11 @@ process.stdin.on("readable", function () {
     }
 });
 
-function ensureAuthenticated(req, res, next) {
-    const token = req.session.accessToken;
-    if (!token) {
-        return res.status(401).redirect('/launch');
-    }
-    next();
-}
-
 app.get('/launch', (req, res) => {
     res.render('launch');
 });
 
-app.get('/', (req, res) => {
+app.get('/index', (req, res) => {
     res.render('index');
 });
 
