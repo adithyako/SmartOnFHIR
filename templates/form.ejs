@@ -61,8 +61,8 @@
 
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
             const formData = JSON.stringify(userProfile, null, 2);
-
-            window.alert(formData);
+            
+            document.querySelector("responseContainer").innerHTML = formData;
 
 
             // const filePath = 'qr.json';
