@@ -8,6 +8,7 @@ const smart = require("fhirclient");
 const session = require("express-session");
 const fetch = require('node-fetch');
 const fs = require("fs");
+const axios = require('axios');
 
 app.use(session({
     secret: "v9f2tXGC/fcqMFfIdzMOWY1656C//q6LXG++3Z/e4PiQMbqn4kMN27XoJY+ZOdedD0U2R2XXM+ejJ6GT7f4EVg==",
@@ -62,10 +63,42 @@ app.get('/index', (req, res) => {
     res.render('index');
 });
 
-app.get("/app", (req, res) => {
-    smart(req, res).ready().then(client => handler(client, res));
-    const variables = { formToAdd: jsonList };
-    res.render("form", variables);
+app.get("/app", async (req, res) => {
+    const code = req.query.code;
+    const redirectUri = 'https://smartonfhir.onrender.com/app';
+
+    if (!code) {
+        return res.status(400).send('Authorization code is missing');
+    }
+
+    try {
+        const tokenResponse = await axios.post('https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token', null, {
+            params: {
+                client_id: 'a3ca143a-635b-463a-9371-176c16f4e966',
+                client_secret: 'v9f2tXGC/fcqMFfIdzMOWY1656C//q6LXG++3Z/e4PiQMbqn4kMN27XoJY+ZOdedD0U2R2XXM+ejJ6GT7f4EVg==',
+                grant_type: 'authorization_code',
+                code: code,
+                redirect_uri: redirectUri
+            },
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+
+        // Store the access token in the session
+        req.session.accessToken = tokenResponse.data.access_token;
+
+        // Proceed with your existing logic
+        // const client = smart(req, res).ready(); // Ensure this function returns the necessary client
+        // const handlerResponse = await handler(client, res);
+        const variables = { formToAdd: jsonList, accessToken: tokenResponse.data.access_token };
+
+        res.render("form", variables);
+
+    } catch (error) {
+        console.error('Error during OAuth2 token exchange:', error.response ? error.response.data : error.message);
+        res.status(500).send('Token exchange failed');
+    }
 });
 
 app.post("/save-response", (req, res) => {
