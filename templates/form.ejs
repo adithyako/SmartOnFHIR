@@ -61,14 +61,18 @@
 
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
             const formData = JSON.stringify(userProfile, null, 2);
-            const filePath = 'qr.json';
 
-            try {
-                fs.writeFileSync(filePath, formData);
-                console.log('JSON data saved to file successfully.');
-            } catch (error) {
-                console.error('Error writing JSON data to file:', error);
-            }
+            window.alert(formData);
+
+
+            // const filePath = 'qr.json';
+
+            // try {
+            //     fs.writeFileSync(filePath, formData);
+            //     console.log('JSON data saved to file successfully.');
+            // } catch (error) {
+            //     console.error('Error writing JSON data to file:', error);
+            // }
             
             // if (!format) return; // No action if default option is selected
 

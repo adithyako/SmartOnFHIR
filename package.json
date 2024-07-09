@@ -17,8 +17,7 @@
     "express-session": "^1.18.0",
     "fhir": "^4.12.0",
     "fhirclient": "^2.5.3",
-    "lforms": "^36.1.3",
-    "react-native-validator-form": "^1.0.0"
+    "lforms": "^36.1.3"
   },
   "keywords": []
 }
