@@ -22,10 +22,12 @@ app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/public', express.static('public'));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.listen(portNumber, () => {
-    console.log(`Web server started and running at https://smartonfhir.onrender.com/index`);
+    console.log(`Web server started and running at https://smartonfhir.onrender.com/`);
 });
 
 process.stdin.setEncoding("utf8");
@@ -67,7 +69,7 @@ app.get('/launch', (req, res) => {
     res.render('launch');
 });
 
-app.get('/index', (req, res) => {
+app.get('/', (req, res) => {
     res.render('index');
 });
 
