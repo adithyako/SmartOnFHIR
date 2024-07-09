@@ -35,11 +35,7 @@
 
         <div class="AHC">
             <div class="save-menu">
-                <select onchange="saveResponse(this.value)">
-                    <option value="">Select Save Option</option>
-                    <option value="FHIR QuestionnaireResponse (Epic)">FHIR QuestionnaireResponse (Epic)</option>
-                    <!-- Add more options as needed -->
-                </select>
+                <button onlick = "saveResponse()">Generate QuestionnaireResponse</button>
             </div>
             <link href="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/styles.css" media="screen" rel="stylesheet" />
             <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
@@ -56,8 +52,7 @@
             LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
         }
 
-        async function saveResponse(format) {
-
+        function saveResponse() {
 
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
             const formData = JSON.stringify(qr, null, 2);
