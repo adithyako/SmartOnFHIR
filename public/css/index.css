@@ -1,36 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.box {
-    background-color: #EEEFF3;
-    height: 500px;
-    width: 500px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 40px 40px 40px;
-    flex-direction: column;
-    margin: 40px 40px 40px 40px;
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafb;
 }
 
-.box a {
-    font-family: "League Spartan", sans-serif;
-    font-weight: 600;
-    font-size: 24px;
-    text-align: center;
-    padding: 40px 40px 40px 40px;
+.container {
+  max-width: 1200px;
 }
 
-.box button {
-    height: 60px;
-    width: 350px;
-    background-color: #D71559;
-    color: #FFF6FA;
-    font-family: "League Spartan", sans-serif;
-    font-size: 24px;
-    margin: 40px 40px 40px 40px;
-    border: none;
-    cursor: pointer;
+.list-none li {
+  transition: color 0.3s ease;
 }
