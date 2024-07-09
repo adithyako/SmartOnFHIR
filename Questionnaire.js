@@ -21,10 +21,12 @@ app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/public', express.static('public'));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.listen(portNumber, () => {
-    console.log(`Web server started and running at https://smartonfhir.onrender.com/index`);
+    console.log(`Web server started and running at https://smartonfhir.onrender.com/`);
 });
 
 process.stdin.setEncoding("utf8");
@@ -54,11 +56,19 @@ process.stdin.on("readable", function () {
     }
 });
 
+function ensureAuthenticated(req, res, next) {
+    const token = req.session.accessToken;
+    if (!token) {
+        return res.status(401).redirect('/launch');
+    }
+    next();
+}
+
 app.get('/launch', (req, res) => {
     res.render('launch');
 });
 
-app.get('/index', (req, res) => {
+app.get('/', (req, res) => {
     res.render('index');
 });
 
