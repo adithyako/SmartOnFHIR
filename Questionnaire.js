@@ -16,6 +16,7 @@ app.use(session({
     cookie: { secure: false } // use secure: true in production
 }));
 
+
 app.set("views", path.resolve(__dirname, "templates"));
 app.set("view engine", "ejs");
 
