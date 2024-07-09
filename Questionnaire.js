@@ -54,13 +54,12 @@ process.stdin.on("readable", function () {
     }
 });
 
-let auth_token;
-
 function ensureAuthenticated(req, res, next) {
-    auth_token = req.session.accessToken;
-    if (!auth_token) {
+    const token = req.session.accessToken;
+    if (!token) {
         return res.status(401).redirect('/launch');
     }
+    sessionStorage.setItem('oauth2_token', token);
     next();
 }
 
@@ -74,7 +73,7 @@ app.get('/index', (req, res) => {
 
 app.get("/app", (req, res) => {
     smart(req, res).ready().then(client => handler(client, res));
-    const variables = { formToAdd: jsonList, auth: auth_token };
+    const variables = { formToAdd: jsonList };
     res.render("form", variables);
 });
 
