@@ -45,7 +45,7 @@
     <script>
         FHIR.oauth2.ready().then(client => {
             const token = client.state.tokenResponse.access_token;
-            sessionStorage.setItem('oauth2_token', token);
+            // sessionStorage.setItem('oauth2_token', token);
         }).catch(error => {
             console.error('Error during OAuth2 token exchange:', error);
         });
@@ -56,10 +56,10 @@
         async function saveResponse(format) {
             if (!format) return; // No action if default option is selected
             let token = sessionStorage.getItem('oauth2_token');
-            if (!token) {
-                alert('OAuth2 token is missing.');
-                return;
-            }
+            // if (!token) {
+            //     alert('OAuth2 token is missing.');
+            //     return;
+            // }
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
             const fhirEndpoint = 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/QuestionnaireResponse';
             try {
