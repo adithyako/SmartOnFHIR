@@ -54,6 +54,14 @@ process.stdin.on("readable", function () {
     }
 });
 
+function ensureAuthenticated(req, res, next) {
+    const token = req.session.accessToken;
+    if (!token) {
+        return res.status(401).redirect('/launch');
+    }
+    next();
+}
+
 app.get('/launch', (req, res) => {
     res.render('launch');
 });
