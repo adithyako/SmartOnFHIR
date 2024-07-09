@@ -48,7 +48,7 @@
         FHIR.oauth2.ready(client => client.request(client.user.fhirUser));
 
         function loadQuestionnaire() {
-            document.getElementById('formContainer').style.display = 'block';
+            document.getElementById('#formContainer').style.display = 'block';
             LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
         }
 
@@ -57,7 +57,7 @@
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
             const formData = JSON.stringify(qr, null, 2);
             
-            document.querySelector("responseContainer").innerHTML = formData;
+            document.querySelector("#responseContainer").innerHTML = formData;
 
 
             // const filePath = 'qr.json';
