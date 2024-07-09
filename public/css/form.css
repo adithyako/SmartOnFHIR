@@ -1,36 +1,46 @@
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.pagebox {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
 }
-.box {
-    background-color: #EEEFF3;
-    height: 500px;
-    width: 500px;
+
+.container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 40px 40px 40px;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.questionnaire-container {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 60%;
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    position: relative;
+    display: flex;
     flex-direction: column;
-    margin: 40px 40px 40px 40px;
 }
 
-.box a {
-    font-family: "League Spartan", sans-serif;
-    font-weight: 600;
-    font-size: 24px;
-    text-align: center;
-    padding: 40px 40px 40px 40px;
+
+.AHC {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 30%;
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
-.box button {
-    height: 60px;
-    width: 350px;
-    background-color: #D71559;
-    color: #FFF6FA;
-    font-family: "League Spartan", sans-serif;
-    font-size: 24px;
-    margin: 40px 40px 40px 40px;
-    border: none;
-    cursor: pointer;
+.save-menu {
+    margin-bottom: 10px;
 }
