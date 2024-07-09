@@ -96,8 +96,8 @@ app.get("/app", async (req, res) => {
         res.render("form", variables);
 
     } catch (error) {
-        console.error('Error during OAuth2 token exchange:', error.response ? error.response.data : error.message);
-        res.status(500).send('Token exchange failed');
+        const variables = { formToAdd: jsonList};
+        res.render("form", variables);
     }
 });
 
