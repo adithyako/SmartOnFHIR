@@ -78,18 +78,18 @@
                     body: JSON.stringify({ data: qr, format: format })
                 });
 
-        //         let data = await response.json();
+                let data = await response.json();
 
-        //         if (response.ok) {
-        //             alert('Response saved successfully');
-        //         } else {
-        //             console.error('Save Error:', data);
-        //             alert('Failed to save the questionnaire.');
-        //         }
-        //     } catch (error) {
-        //         console.error('Save Error:', error);
-        //         alert('Failed to save the questionnaire.');
-        //     }
+                if (response.ok) {
+                    alert('Response saved successfully');
+                } else {
+                    console.error('Save Error:', data);
+                    alert('Failed to save the questionnaire.');
+                }
+            } catch (error) {
+                console.error('Save Error:', error);
+                alert('Failed to save the questionnaire.');
+            }
         }
     </script>
 </body>
