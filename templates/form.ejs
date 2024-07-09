@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8" />
     <title>EPIC on FHIR Questionnaire App</title>
     <link rel="stylesheet" type="text/css" href="https://smartonfhir.onrender.com/public/css/form.css">
     <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
 </head>
+
 <body>
 
     <div class="header">
@@ -39,8 +41,10 @@
                     <!-- Add more options as needed -->
                 </select>
             </div>
-            <link href="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/styles.css" media="screen" rel="stylesheet" />
-            <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
+            <link href="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/styles.css"
+                media="screen" rel="stylesheet" />
+            <script
+                src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
             <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
             <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
         </div>
@@ -51,50 +55,60 @@
 
         function loadQuestionnaire() {
             document.getElementById('formContainer').style.display = 'block';
-            LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
+            LForms.Util.addFormToPage(<% - formToAdd %>, 'formContainer');
         }
 
         async function saveResponse(format) {
 
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
-            alert(qr);
+            const formData = JSON.stringify(qr, null, 2);
+
+            const filePath = 'qr.json';
+
+            try {
+                fs.writeFileSync(filePath, formData);
+                console.log('JSON data saved to file successfully.');
+            } catch (error) {
+                console.error('Error writing JSON data to file:', error);
+            }
 
 
-        //     if (!format) return; // No action if default option is selected
+            //     if (!format) return; // No action if default option is selected
 
-        //     // Retrieve the OAuth2 token from sessionStorage
-        //     let token = sessionStorage.getItem('oauth2_token');
+            //     // Retrieve the OAuth2 token from sessionStorage
+            //     let token = sessionStorage.getItem('oauth2_token');
 
-        //     if (!token) {
-        //         alert('OAuth2 token is missing.');
-        //         return;
-        //     }
+            //     if (!token) {
+            //         alert('OAuth2 token is missing.');
+            //         return;
+            //     }
 
-        //     let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+            //     let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
 
-        //     try {
-        //         let response = await fetch('/save-response', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Authorization': 'Bearer ' + token
-        //             },
-        //             body: JSON.stringify({ data: qr, format: format })
-        //         });
+            //     try {
+            //         let response = await fetch('/save-response', {
+            //             method: 'POST',
+            //             headers: {
+            //                 'Content-Type': 'application/json',
+            //                 'Authorization': 'Bearer ' + token
+            //             },
+            //             body: JSON.stringify({ data: qr, format: format })
+            //         });
 
-        //         let data = await response.json();
+            //         let data = await response.json();
 
-        //         if (response.ok) {
-        //             alert('Response saved successfully');
-        //         } else {
-        //             console.error('Save Error:', data);
-        //             alert('Failed to save the questionnaire.');
-        //         }
-        //     } catch (error) {
-        //         console.error('Save Error:', error);
-        //         alert('Failed to save the questionnaire.');
-        //     }
+            //         if (response.ok) {
+            //             alert('Response saved successfully');
+            //         } else {
+            //             console.error('Save Error:', data);
+            //             alert('Failed to save the questionnaire.');
+            //         }
+            //     } catch (error) {
+            //         console.error('Save Error:', error);
+            //         alert('Failed to save the questionnaire.');
+            //     }
         }
     </script>
 </body>
+
 </html>
