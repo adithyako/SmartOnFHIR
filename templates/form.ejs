@@ -55,14 +55,28 @@
     <script>
         FHIR.oauth2.ready()
             .then(function (client) {
-                myapp.smart = client
+                myapp.smart = client;
                 console.log(client);
             })
+            .catch(function (error) {
+                console.error("Error during FHIR client initialization:", error);
+            });
 
         function loadQuestionnaire() {
             //  document.getElementById('#formContainer').style.display = 'block';
             LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
         }
+
+        function refreshTokenIfNeeded(client) {
+            if (client.shouldRefresh()) {
+                client.refresh().then(updatedClient => {
+                    console.log("Token refreshed!");
+                }).catch(error => {
+                    console.error("Failed to refresh token:", error);
+                });
+            }
+        }
+
 
         function saveResponse() {
 

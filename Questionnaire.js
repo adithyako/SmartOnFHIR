@@ -13,7 +13,7 @@ app.use(session({
     secret: "v9f2tXGC/fcqMFfIdzMOWY1656C//q6LXG++3Z/e4PiQMbqn4kMN27XoJY+ZOdedD0U2R2XXM+ejJ6GT7f4EVg==",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // use secure: true in production
+    cookie: { secure: true } // use secure: true in production
 }));
 
 app.set("views", path.resolve(__dirname, "templates"));
