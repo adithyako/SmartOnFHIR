@@ -11,7 +11,7 @@ const fs = require("fs");
 const axios = require('axios');
 
 app.use(session({
-    secret: "XFs2m2daKs+VEnVclC3AzLjfVXODvtVeaLgep+wUsA7A7MaIZckukidI3wTL4dcSgnA63SbaBN6YHzJ57p7koA==",
+    secret: "Vhnbr3ABsCfjyVOLPclpXKd9ZvI47ylERFOht5kfZ8sdn0uBiXL2G3sGYd+M5tT98x/ECUabKnKBFXRpKxKp2Q==",
     resave: false,
     saveUninitialized: false,
     cookie: { secure: true } // use secure: true in production
