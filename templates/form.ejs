@@ -60,7 +60,7 @@
 
 
             let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
-            const formData = JSON.stringify(userProfile, null, 2);
+            const formData = JSON.stringify(qr, null, 2);
             
             document.querySelector("responseContainer").innerHTML = formData;
 
