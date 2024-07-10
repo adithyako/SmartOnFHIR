@@ -53,12 +53,18 @@
             });
 
         function loadQuestionnaire() {
-            // Ensure the client is ready and the user is authenticated
             FHIR.oauth2.ready().then(function (client) {
-                // Fetch the questionnaire JSON; replace 'url_to_questionnaire' with the actual URL to fetch the questionnaire
                 fetch('url_to_questionnaire')
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Failed to fetch: " + response.statusText);
+                        }
+                        return response.json();
+                    })
                     .then(questionnaire => {
+                        if (!questionnaire || !Array.isArray(questionnaire.item)) {
+                            throw new Error("Invalid questionnaire data");
+                        }
                         LForms.Util.addFormToPage(questionnaire, 'formContainer');
                     })
                     .catch(error => {
@@ -70,6 +76,7 @@
                 alert("Error during FHIR client initialization: " + error.message);
             });
         }
+
 
         function refreshTokenIfNeeded(client) {
             if (client.shouldRefresh()) {
