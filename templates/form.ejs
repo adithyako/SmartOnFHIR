@@ -53,13 +53,22 @@
             });
 
         function loadQuestionnaire() {
-            try {
-                // Assuming <%- formToAdd %> is a valid JSON object available in your template
-                LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
-            } catch (error) {
-                console.error("Error loading questionnaire:", error);
-                alert("Error loading questionnaire: " + error.message);
-            }
+            // Ensure the client is ready and the user is authenticated
+            FHIR.oauth2.ready().then(function (client) {
+                // Fetch the questionnaire JSON; replace 'url_to_questionnaire' with the actual URL to fetch the questionnaire
+                fetch('url_to_questionnaire')
+                    .then(response => response.json())
+                    .then(questionnaire => {
+                        LForms.Util.addFormToPage(questionnaire, 'formContainer');
+                    })
+                    .catch(error => {
+                        console.error("Error fetching questionnaire:", error);
+                        alert("Error fetching questionnaire: " + error.message);
+                    });
+            }).catch(function (error) {
+                console.error("Error during FHIR client initialization:", error);
+                alert("Error during FHIR client initialization: " + error.message);
+            });
         }
 
         function refreshTokenIfNeeded(client) {
