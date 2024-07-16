@@ -3,15 +3,14 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const axios = require('axios');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const cors = require('cors');
-
-// Allowing requests from your React development server
+// Allowing requests from your React development server, adjust as necessary for production
 app.use(cors({
-    origin: 'http://localhost:3000'  // Adjust as necessary for production
+    origin: ['http://localhost:3000', 'https://your-production-url.com']  // Add your production URL here
 }));
 
 // Configure session management
@@ -19,17 +18,17 @@ app.use(session({
     secret: process.env.SESSION_SECRET, // Use the session secret from environment variable
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: true } // Ensure secure cookies in production
+    cookie: { secure: true } // Ensure secure cookies in production, adjust as necessary
 }));
 
 // Serve static files from the React app build directory
-app.use(express.static(path.join(/Users/sooryarajendran/smart-on-fhir, 'build')));
+app.use(express.static(path.join(__dirname, 'build')));
 
 // Parse JSON and urlencoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// API Routes
+// API Routes for handling OAuth with Epic on FHIR
 app.get("/app", async (req, res) => {
     const { code } = req.query;
     if (!code) {
@@ -38,7 +37,7 @@ app.get("/app", async (req, res) => {
     try {
         const tokenResponse = await axios.post('https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token', null, {
             params: {
-                client_id: process.env.CLIENT_ID, // Use environment variables for sensitive info
+                client_id: process.env.CLIENT_ID,
                 client_secret: process.env.CLIENT_SECRET,
                 grant_type: 'authorization_code',
                 code: code,
@@ -69,12 +68,10 @@ app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
 
+// Example API endpoint
 app.get("/api/data", (req, res) => {
-    // Fetch or compute data here
     res.json({ message: "This is your data." });
 });
-
-
 
 // Command line interface to interact with the server
 const readline = require('readline').createInterface({
