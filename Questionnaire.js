@@ -1,129 +1,96 @@
-// Load environment variables
 require('dotenv').config();
-
 const express = require("express");
-const app = express();
 const path = require("path");
-const smart = require("fhirclient");
 const session = require("express-session");
-const fetch = require('node-fetch'); // Check if you are using this, otherwise remove
-const fs = require("fs");
 const axios = require('axios');
-const helmet = require('helmet');
 
-// Improved security with Helmet
-app.use(helmet());
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-// Session configuration
+// Configure session management
 app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET, // Use the session secret from environment variable
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: true } // Make sure your site is served over HTTPS
+    cookie: { secure: true } // Ensure secure cookies in production
 }));
 
-// View engine setup
-app.set("views", path.resolve(__dirname, "templates"));
-app.set("view engine", "ejs");
+// Serve static files from the React app build directory
+app.use(express.static(path.join(__dirname, 'build')));
 
-// Built-in middleware to handle URL encoded data and JSON data
-app.use(express.urlencoded({ extended: true }));
+// Parse JSON and urlencoded data
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Serve static files
-app.use('/public', express.static('public'));
-
-// Start the server
-const portNumber = process.env.PORT || 3000;
-app.listen(portNumber, () => {
-    console.log(`Web server started and running at http://localhost:${4000}/index`);
-});
-
-// Server command-line interaction
-process.stdin.setEncoding("utf8");
-const prompt = "Type 'stop' to shutdown the server: ";
-process.stdout.write(prompt);
-process.stdin.on("readable", function () {
-    const dataInput = process.stdin.read();
-    if (dataInput !== null) {
-        const command = dataInput.trim();
-        if (command === "stop") {
-            process.stdout.write("Shutting down the server\n");
-            process.exit(0);
-        } else {
-            process.stdout.write(`Invalid command: ${command}\n`);
-            process.stdout.write(prompt);
-        }
-    }
-});
-
-// Routes
-app.get('/launch', (req, res) => {
-    res.render('launch');
-});
-
-app.get('/index', (req, res) => {
-    res.render('index');
-});
-
+// API Routes
 app.get("/app", async (req, res) => {
-    const code = req.query.code;
+    const { code } = req.query;
     if (!code) {
         return res.status(400).send('Authorization code is missing');
     }
-
     try {
         const tokenResponse = await axios.post('https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token', null, {
             params: {
-                client_id: process.env.CLIENT_ID,
+                client_id: process.env.CLIENT_ID, // Use environment variables for sensitive info
                 client_secret: process.env.CLIENT_SECRET,
                 grant_type: 'authorization_code',
                 code: code,
                 redirect_uri: `${req.protocol}://${req.get('host')}/app`
             },
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
-
-        // Store the access token in the session
         req.session.accessToken = tokenResponse.data.access_token;
-        const variables = { formToAdd: jsonList, accessToken: tokenResponse.data.access_token };
-        res.render("form", variables);
-
+        res.json({ accessToken: tokenResponse.data.access_token }); // Respond with the access token
     } catch (error) {
-        console.error('Failed to exchange token:', error);
-        res.status(500).send('Failed to authenticate');
+        console.error('Error handling /app route:', error.message);
+        res.status(500).send('Server error');
     }
 });
 
 app.post("/save-response", (req, res) => {
-    // Example: save response to a database or file
-    const response = req.body;
-    // Implementation for saving the response goes here
-    console.log('Response saved:', response);
+    console.log('Response saved:', req.body);
     res.json({ status: 'success', message: "Response saved successfully" });
 });
 
-// Read the JSON list for the form
-const listName = process.argv[2]; // Ensure this is passed when starting the server
-const jsonList = fs.readFileSync(listName, "utf-8");
+// Serve the index.html for all other routes to support SPA
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+// Command line interface to interact with the server
+const readline = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+readline.setPrompt("Type 'stop' to shutdown the server: ");
+readline.prompt();
+readline.on("line", function(line) {
+    if (line.trim() === "stop") {
+        console.log("Shutting down the server");
+        process.exit(0);
+    } else {
+        console.log(`Invalid command: ${line}`);
+        readline.prompt();
+    }
+});
 
 
-
-
-/*
-require('dotenv').config();
+/*require('dotenv').config();
 const express = require("express");
 const app = express();
-const bodyParser = require("body-parser");
-const portNumber = 3000;
 const path = require("path");
 const smart = require("fhirclient");
 const session = require("express-session");
 const fetch = require('node-fetch');
 const fs = require("fs");
 const axios = require('axios');
+
+const PORT = process.env.PORT || 3000;
 
 app.use(session({
     secret: "Vhnbr3ABsCfjyVOLPclpXKd9ZvI47ylERFOht5kfZ8sdn0uBiXL2G3sGYd+M5tT98x/ECUabKnKBFXRpKxKp2Q==",
@@ -133,16 +100,24 @@ app.use(session({
 }));
 
 
-app.set("views", path.resolve(__dirname, "templates"));
-app.set("view engine", "ejs");
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'build')));
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use('/public', express.static('public'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.listen(portNumber, () => {
-    console.log(`Web server started and running at https://smartonfhir.onrender.com/index`);
+// Handles any requests that don't match the ones above
+app.get('/*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+
+
+
 
 process.stdin.setEncoding("utf8");
 
