@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 // Allowing requests from your React development server, adjust as necessary for production
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://your-production-url.com']  // Add your production URL here
+    origin: 'https://localhost:3000'   // Add your production URL here
 }));
 
 // Configure session management
@@ -22,7 +22,7 @@ app.use(session({
 }));
 
 // Serve static files from the React app build directory
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(/Users/sooryarajendran/smart-on-fhir, 'build')));
 
 // Parse JSON and urlencoded data
 app.use(express.json());
