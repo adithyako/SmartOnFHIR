@@ -7,6 +7,13 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const cors = require('cors');
+
+// Allowing requests from your React development server
+app.use(cors({
+    origin: 'http://localhost:3000'  // Adjust as necessary for production
+}));
+
 // Configure session management
 app.use(session({
     secret: process.env.SESSION_SECRET, // Use the session secret from environment variable
@@ -16,7 +23,7 @@ app.use(session({
 }));
 
 // Serve static files from the React app build directory
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(/Users/sooryarajendran/smart-on-fhir, 'build')));
 
 // Parse JSON and urlencoded data
 app.use(express.json());
@@ -61,6 +68,13 @@ app.get('/*', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+app.get("/api/data", (req, res) => {
+    // Fetch or compute data here
+    res.json({ message: "This is your data." });
+});
+
+
 
 // Command line interface to interact with the server
 const readline = require('readline').createInterface({
