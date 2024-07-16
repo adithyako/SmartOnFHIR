@@ -1,93 +1,142 @@
-<!DOCTYPE html>
+<!--
+<html>
+
+<head>
+    <link href="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/styles.css" media="screen"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+
+    <div id=formContainer></div>
+
+    <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
+    <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
+    <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
+    <button onclick="showQR()">Show FHIR QuestionnaireResponse</button>
+-->
+
+
 <html>
 <head>
-    <meta charset="UTF-8" />
-    <title>EPIC on FHIR Questionnaire App</title>
-    <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
+    <link href="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/styles.css" media="screen" rel="stylesheet" />
 </head>
 <body>
-    <div class="header">
-        <h1>EPIC on FHIR Questionnaire App</h1>
-    </div>
+    <div id="formContainer"></div>
 
-    <div class="pagebox">
-        <div class="questionnaire-container">
-            <div class="container">
-                <div class="questionnaire-list">
-                    <h3>Featured Questionnaires:</h3>
-                    <ul>
-                        <li onclick="loadQuestionnaire()">AHC HRSN Screening</li>
-                    </ul>
-                </div>
-                <div class="form-display" id="formContainer">
-                    <!-- Form will be loaded here -->
-                </div>
-            </div>
-            <div id="responseContainer">
-                <h3>Questionnaire Responses:</h3>
-                <div id="responsesList"></div>
-            </div>
-            <div id="test"></div>
-        </div>
-
-        <div class="AHC">
-            <div class="save-menu">
-                <button onclick="saveResponse()">Generate QuestionnaireResponse</button>
-            </div>
-            <link href="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/styles.css" media="screen" rel="stylesheet" />
-            <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/assets/lib/zone.min.js"></script>
-            <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
-            <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/fhir/R4/lformsFHIR.min.js"></script>
-        </div>
-    </div>
-
+    <script src="https://lhcforms-static.nlm.nih.gov/lforms-versions/34.0.0/webcomponent/lhc-forms.js"></script>
     <script>
-        FHIR.oauth2.ready()
-            .then(function (client) {
-                myapp.smart = client;
-                console.log(client);
+        document.addEventListener('DOMContentLoaded', function() {
+            var formToAdd = <%- formToAdd %>;
+            LForms.Util.addFormToPage(formToAdd, 'formContainer');
+        });
+        
+        function showQR() {
+            let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+            fetch('/submit-questionnaire', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(qr)
             })
-            .catch(function (error) {
-                console.error("Error during FHIR client initialization:", error);
-                alert("Error during FHIR client initialization: " + error.message);
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.location.href = '/response-data?' + new URLSearchParams({result: JSON.stringify(data)});
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
-
-        function loadQuestionnaire() {
-            try {
-                // Assuming <%- formToAdd %> is a valid JSON object available in your template
-                LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
-            } catch (error) {
-                console.error("Error loading questionnaire:", error);
-                alert("Error loading questionnaire: " + error.message);
-            }
-        }
-
-        function refreshTokenIfNeeded(client) {
-            if (client.shouldRefresh()) {
-                client.refresh().then(updatedClient => {
-                    console.log("Token refreshed!");
-                }).catch(error => {
-                    console.error("Failed to refresh token:", error);
-                    alert("Failed to refresh token: " + error.message);
-                });
-            }
-        }
-
-        function saveResponse() {
-            try {
-                let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
-                const formData = JSON.stringify(qr, null, 2);
-
-                // Display the JSON string in an alert
-                alert("Generated QuestionnaireResponse: " + formData);
-
-                // Also display it in the test div
-                document.querySelector("#test").innerHTML = formData;
-            } catch (error) {
-                console.error("Error generating QuestionnaireResponse:", error);
-                alert("Error generating QuestionnaireResponse: " + error.message);
-            }
         }
     </script>
 </body>
+</html>
+
+
+
+
+
+
+
+
+<!--
+    <script>
+        LForms.Util.addFormToPage(<%- formToAdd %>, 'formContainer');
+        
+        function showQR() {
+            let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+            
+            // Submitting the data to the server
+            fetch('/submit-questionnaire', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(qr)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Redirect to responsedata.ejs with the server response
+                window.location.href = '/response-data?' + new URLSearchParams({result: JSON.stringify(data)});
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+
+        document.getElementById('formSubmitButton').addEventListener('click', () => {
+            const qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+            fetch('/submit-questionnaire', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'CSRF-Token': csrfToken // Ensure CSRF protection
+                },
+                body: JSON.stringify(qr)
+            })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = `/response-success?data=${encodeURIComponent(JSON.stringify(data))}`;
+            })
+            .catch(error => {
+                console.error('Submission Error:', error);
+            });
+        });
+
+    </script>
+
+    <script>
+        LForms.Util.addFormToPage(, 'formContainer');
+
+        // Define the function for showing the QuestionnaireResponse
+        function showQR() {
+            let qr = LForms.Util.getFormFHIRData('QuestionnaireResponse', 'R4');
+
+            let lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(, 'R4');
+            let formWithUserData = LForms.Util.mergeFHIRDataIntoLForms("QuestionnaireResponse", qr, lformsQ, "R4");
+            
+            LForms.Util.addFormToPage(formWithUserData, 'formContainer');
+            // fetch('/submit-questionnaire', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/fhir+json'
+            //     },
+            //     body: JSON.stringify(qr)
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     console.log('Success:', data);
+            // })
+            // .catch((error) => {
+            //     console.error('Error:', error);
+            //     // Handle the error appropriately
+            // });
+            
+        }
+    </script>
+-->
+</body>
+
 </html>
